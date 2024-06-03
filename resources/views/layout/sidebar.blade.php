@@ -36,7 +36,7 @@
             </a>
           </li>
           <li>
-            <a class="" href="{{ url('shohibul'); }}">
+            <a class="" href="{{ route('shohibul.index'); }}">
               <i class="bi bi-circle"></i><span>Shohibul Qurban</span>
             </a>
           </li>

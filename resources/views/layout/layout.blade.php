@@ -282,7 +282,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Al-Istiqomah</span></strong> {{ date('Y') }}. All Rights Reserved
+      &copy; <strong><span>Al-Istiqomah</span></strong> {{ date('Y') }}. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->

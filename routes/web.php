@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\KelompokController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
+use App\Http\Controllers\Backend\UPQ\ShohibulController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::get('/penerima/exportExcel', [PenerimaController::class, 'export_excel'])->name('exportExcel');
     Route::post('/penerima/importData', [PenerimaController::class, 'importData'])->name('importData');
     Route::resource('penerima', PenerimaController::class);
+    Route::resource('shohibul', ShohibulController::class);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){
