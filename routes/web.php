@@ -3,12 +3,11 @@
 use App\Http\Controllers\Backend\KelompokController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
 use App\Http\Controllers\Backend\UPQ\ShohibulController;
+use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
