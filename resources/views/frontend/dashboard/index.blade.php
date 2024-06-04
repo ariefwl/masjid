@@ -293,7 +293,7 @@
         <div class="col-lg-6">
           <div class="row">
 
-            <!-- Sales Card -->
+            <!-- Sapi Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
 
@@ -328,7 +328,7 @@
               </div>
             </div><!-- End Sales Card -->
 
-            <!-- Revenue Card -->
+            <!-- Kambing Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
 
@@ -364,7 +364,7 @@
             </div><!-- End Revenue Card -->
 
             <!-- Kelompok Card -->
-            <div class="col-xxl-4 col-xl-6">
+            <div class="col-xxl-4 col-md-6">
 
               <div class="card info-card customers-card">
 
@@ -402,7 +402,7 @@
             <!-- End Kelompok Card -->
 
             <!-- Penerima Card -->
-            <div class="col-xxl-4 col-xl-6">
+            <div class="col-xxl-4 col-md-6">
 
                 <div class="card info-card customers-card">
   
@@ -436,11 +436,11 @@
                   </div>
                 </div>
   
-              </div>
-              <!-- End Kelompok Card -->
+            </div>
+            <!-- End Penerima Card -->
 
             <!-- Reports -->
-            <div class="col-12">
+            {{-- <div class="col-12">
               <div class="card">
 
                 <div class="filter">
@@ -519,10 +519,11 @@
                 </div>
 
               </div>
-            </div><!-- End Reports -->
+            </div> --}}
+            <!-- End Reports -->
 
             <!-- Recent Sales -->
-            <div class="col-12">
+            {{-- <div class="col-12">
               <div class="card recent-sales overflow-auto">
 
                 <div class="filter">
@@ -593,10 +594,11 @@
                 </div>
 
               </div>
-            </div><!-- End Recent Sales -->
+            </div> --}}
+            <!-- End Recent Sales -->
 
             <!-- Top Selling -->
-            <div class="col-12">
+            {{-- <div class="col-12">
               <div class="card top-selling overflow-auto">
 
                 <div class="filter">
@@ -667,7 +669,8 @@
                 </div>
 
               </div>
-            </div><!-- End Top Selling -->
+            </div> --}}
+            <!-- End Top Selling -->
 
           </div>
         </div><!-- End Left side columns -->
@@ -675,7 +678,7 @@
         <!-- Right side columns -->
         <div class="col-lg-6">
 
-          <!-- Recent Activity -->
+          <!-- Shohibul Card -->
           <div class="card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -718,10 +721,10 @@
 
             </div>
           </div>
-          <!-- End Recent Activity -->
+          <!-- End Shohibul Activity -->
 
           <!-- Budget Report -->
-          <div class="card">
+          {{-- <div class="card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -792,10 +795,11 @@
               </script>
 
             </div>
-          </div><!-- End Budget Report -->
+          </div> --}}
+          <!-- End Budget Report -->
 
           <!-- Website Traffic -->
-          <div class="card">
+          {{-- <div class="card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -870,7 +874,8 @@
               </script>
 
             </div>
-          </div><!-- End Website Traffic -->
+          </div> --}}
+          <!-- End Website Traffic -->
 
           <!-- News & Updates Traffic -->
           <div class="card">
@@ -936,7 +941,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Al - Istiqomah</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>Al - Istiqomah {{ date('Y') }}</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->
