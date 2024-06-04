@@ -311,7 +311,7 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Sapi <span>| <a href="">detail</a></span></h5>
+                  <h5 class="card-title">Sapi <span>| <a href="{{ url('groupSapi'); }}">detail</a></span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -694,7 +694,7 @@
             </div>
 
             <div class="card-body">
-              <h5 class="card-title">Shohibul Qurban <span>| <a href="">Lihat detail..</a></span></h5>
+              <h5 class="card-title">Shohibul Qurban <span>| <a href="{{ url('shohibulDetail'); }}">Lihat detail..</a></span></h5>
 
               <div class="activity">
 
