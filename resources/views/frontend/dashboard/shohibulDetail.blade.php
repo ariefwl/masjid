@@ -288,7 +288,7 @@
                         <div class="row mb-2">
                             <div class="col-lg-6 col-sm-12">
                                 <a href="{{ url('/') }}" type="button" class="btn btn-circle btn-sm btn-success">
-                                    <b> <i class="ri-add-fill"></i> Kembali</b>
+                                    <b> <i class="ri-logout-circle-line"></i> Kembali</b>
                                 </a>
                             </div>
                         </div>
@@ -297,11 +297,20 @@
                                 <span class="input-group-text">Filter Jenis Qurban</span>
                                 <select class="form-select" name="jenis" id="jenis">                                    
                                     <option value="all">-- Semua Jenis --</option>
-                                    <option value="0">Kambing</option>
-                                    <option value="11">Kelompok Sapi 1</option>
-                                    <option value="12">Kelompok Sapi 2</option>
-                                    <option value="13">Kelompok Sapi 3</option>
-                                    <option value="14">Kelompok Sapi 4</option>
+                                    <?php foreach ($jenis as $key) { ?>
+                                      <option value="{{ $key['id'] }}">{{ $key['nama_jenis'] }}</option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">Filter Kelompok Sapi</span>
+                                <select disabled class="form-select" name="kelompok" id="kelompok">                                    
+                                    <option value="all">-- Semua Kelompok --</option>
+                                    <?php foreach ($kelompok as $key) { ?>
+                                      <option value="{{ $key['id'] }}">Kelompok {{ $key['nama_hewan'] }}</option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -359,6 +368,7 @@
                     url : '{{ url()->current() }}',
                     data : function(data){
                         data.jenis = $('#jenis').val();
+                        data.kelompok = $('#kelompok').val();
                     }
                 },
                 columns: [
@@ -372,6 +382,15 @@
         })
 
         $('#jenis').on('change', function(){
+            if($('#jenis').val() == 1){
+              document.getElementById("kelompok").disabled=false;
+            }else{
+              document.getElementById("kelompok").disabled=true;
+            }
+            table.ajax.reload(); 
+        })
+
+        $('#kelompok').on('change', function(){
             table.ajax.reload(); 
         })
   </script>
