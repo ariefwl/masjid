@@ -19,8 +19,18 @@ class DashboardController extends Controller
         $data = [
             'shohibul' => shohibul::orderBy('id', 'desc')->limit(5)->get(),
             'penerima' => penerima::count(),
-            'kelompok' => kelompok::count()
+            'kelompok' => kelompok::count(),
+            'totalsapi' => DB::table('shohibuls as a')
+                        ->select('a.id_hewan')
+                        ->join('hewans as b', 'a.id_hewan','=','b.id')
+                        ->join('jenis as c','c.id','=','b.id_jenis')
+                        ->where('c.id','=', 1)
+                        ->groupBy('a.id_hewan')
+                        ->orderBy('a.id_hewan', 'DESC')
+                        ->limit(1)
+                        ->get()
         ];
+        // dd($data['totalsapi'][0]->{'id_hewan'});
         return view('frontend.dashboard.index', $data);
     }
 
@@ -79,5 +89,10 @@ class DashboardController extends Controller
             'shohibul' => shohibul::get()
         ];
         return view('frontend.dashboard.groupSapi');
+    }
+
+    public function kelompok()
+    {
+        return view('frontend.dashboard.kelompok');
     }
 }
