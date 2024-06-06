@@ -439,6 +439,76 @@
             </div>
             <!-- End Penerima Card -->
 
+            {{-- Chart Warga --}}
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Jumlah Warga Per Kelompok</h5>
+    
+                  <!-- Column Chart -->
+                  <div id="columnChart"></div>
+    
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                      new ApexCharts(document.querySelector("#columnChart"), {
+                        series: [{
+                          name: 'Non Muslim',
+                          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                        }, {
+                          name: 'Muslim',
+                          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                        }, 
+                        // {
+                        //   name: 'Free Cash Flow',
+                        //   data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                        // }
+                      ],
+                        chart: {
+                          type: 'bar',
+                          height: 350
+                        },
+                        plotOptions: {
+                          bar: {
+                            horizontal: false,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                          },
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        stroke: {
+                          show: true,
+                          width: 2,
+                          colors: ['transparent']
+                        },
+                        xaxis: {
+                          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        },
+                        yaxis: {
+                          title: {
+                            text: '$ (thousands)'
+                          }
+                        },
+                        fill: {
+                          opacity: 1
+                        },
+                        tooltip: {
+                          y: {
+                            formatter: function(val) {
+                              return "$ " + val + " thousands"
+                            }
+                          }
+                        }
+                      }).render();
+                    });
+                  </script>
+                  <!-- End Column Chart -->
+    
+                </div>
+              </div>
+            </div>
+
             <!-- Reports -->
             {{-- <div class="col-12">
               <div class="card">
@@ -878,7 +948,7 @@
           <!-- End Website Traffic -->
 
           <!-- News & Updates Traffic -->
-          <div class="card">
+          {{-- <div class="card">
             <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -929,7 +999,8 @@
               </div><!-- End sidebar recent posts-->
 
             </div>
-          </div><!-- End News & Updates -->
+          </div> --}}
+          <!-- End News & Updates -->
 
         </div><!-- End Right side columns -->
 

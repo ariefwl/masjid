@@ -79,6 +79,11 @@
                                     <th>Alamat</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><span style="color: blue">* Biru : warga non muslim</span></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -128,11 +133,16 @@
                     }
                 },
                 columns: [
-                    { data : 'DT_RowIndex', name : 'DT_RowIndex'},
-                    { data : 'nama', name : 'nama'},
-                    { data : 'alamat', name : 'alamat'}
+                    { data : 'DT_RowIndex'},
+                    { data : 'nama'},
+                    { data : 'alamat'}
                 ],
                 lengthChange: false,
+                rowCallback: function(row, data, index){
+                    if(data.type == 1){
+                        $(row).find('td:eq(1)').css('color', 'blue');
+                    }
+                }
             })
         })
   </script>

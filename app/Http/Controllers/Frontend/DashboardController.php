@@ -29,7 +29,8 @@ class DashboardController extends Controller
                         ->groupBy('a.id_hewan')
                         ->orderBy('a.id_hewan', 'DESC')
                         ->limit(1)
-                        ->get()
+                        ->get(),
+            // 'klp' =>   
         ];
         // dd($data['totalsapi'][0]->{'id_hewan'});
         return view('frontend.dashboard.index', $data);
@@ -92,8 +93,15 @@ class DashboardController extends Controller
         return view('frontend.dashboard.groupSapi');
     }
 
-    public function kelompok()
+    public function kelompok(Request $request)
     {
+        if (request()->ajax()) {
+            $data = DB::table('kelompoks') 
+                ->select('kelompok','koordinator','telp','alamat')
+                ->get();
+
+            return DataTables::of($data)->addIndexColumn()->make();
+        }
         return view('frontend.dashboard.kelompok');
     }
 
@@ -102,11 +110,14 @@ class DashboardController extends Controller
         if (request()->ajax()) {
             $kelompok = $request->kelompok;
             $data = DB::table('penerimas')
-            ->select('nama','alamat')
+            ->select('nama','alamat','type')
             ->get();
 
             return DataTables::of($data)->addIndexColumn()->make();
         }
-        return view('frontend.dashboard.warga');
+        $dt = [
+            'kelompok' => kelompok::get()
+        ];
+        return view('frontend.dashboard.warga', $dt);
     }
 }
