@@ -315,7 +315,7 @@
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
+                      <i class="bi bi-github"></i>
                     </div>
                     <div class="ps-3">
                       <h6><?= $totalsapi[0]->{'id_hewan'} ?> Ekor</h6>
@@ -350,7 +350,7 @@
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                      <i class="ri-bug-line"></i>
                     </div>
                     <div class="ps-3">
                       <h6>- Ekor</h6>
@@ -420,7 +420,7 @@
                   </div>
   
                   <div class="card-body">
-                    <h5 class="card-title">Penerima <span>| <a href="#">Lihat detail</a></span></h5>
+                    <h5 class="card-title">Penerima Qurban<span>| <a href="{{ route('dashboard.warga') }}">Lihat detail</a></span></h5>
   
                     <div class="d-flex align-items-center">
                       <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">

@@ -10,6 +10,7 @@ use App\Models\penerima;
 use App\Models\shohibul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
 class DashboardController extends Controller
@@ -94,5 +95,18 @@ class DashboardController extends Controller
     public function kelompok()
     {
         return view('frontend.dashboard.kelompok');
+    }
+
+    public function warga(Request $request)
+    {
+        if (request()->ajax()) {
+            $kelompok = $request->kelompok;
+            $data = DB::table('penerimas')
+            ->select('nama','alamat')
+            ->get();
+
+            return DataTables::of($data)->addIndexColumn()->make();
+        }
+        return view('frontend.dashboard.warga');
     }
 }

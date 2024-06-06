@@ -45,7 +45,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1><b>Daftar Kelompok Jamaah</b></h1>
+      <h1><b>Daftar Kelompok</b></h1>
     </div><!-- End Page Title -->
 
     

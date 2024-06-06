@@ -6,11 +6,13 @@ use App\Http\Controllers\Backend\UPQ\ShohibulController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/shohibulDetail', [DashboardController::class, 'shohibulDetail']);
 Route::get('/groupSapi', [DashboardController::class, 'groupSapi']);
 Route::get('/kel', [DashboardController::class, 'kelompok']);
+Route::get('/warga', [DashboardController::class, 'warga'])->name('dashboard.warga');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
