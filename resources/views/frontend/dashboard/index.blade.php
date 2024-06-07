@@ -444,67 +444,28 @@
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Jumlah Warga Per Kelompok</h5>
-    
+                  
                   <!-- Column Chart -->
                   <div id="columnChart"></div>
-    
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#columnChart"), {
-                        series: [{
-                          name: 'Non Muslim',
-                          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-                        }, {
-                          name: 'Muslim',
-                          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                        }, 
-                        // {
-                        //   name: 'Free Cash Flow',
-                        //   data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-                        // }
-                      ],
-                        chart: {
-                          type: 'bar',
-                          height: 350
-                        },
-                        plotOptions: {
-                          bar: {
-                            horizontal: false,
-                            columnWidth: '55%',
-                            endingShape: 'rounded'
-                          },
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          show: true,
-                          width: 2,
-                          colors: ['transparent']
-                        },
-                        xaxis: {
-                          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-                        },
-                        yaxis: {
-                          title: {
-                            text: '$ (thousands)'
-                          }
-                        },
-                        fill: {
-                          opacity: 1
-                        },
-                        tooltip: {
-                          y: {
-                            formatter: function(val) {
-                              return "$ " + val + " thousands"
-                            }
-                          }
-                        }
-                      }).render();
-                    });
-                  </script>
                   <!-- End Column Chart -->
-    
+                  <?php 
+                  $muslim = "";
+                  $nonMuslim = "";
+                  $klp = ""; 
+
+                  foreach ($type as $dt ):
+                    $mus =  $dt->mus; 
+                    $muslim .= "$mus" . ",";
+                    
+                    $nmus = $dt->non;
+                    $nonMuslim .= "$nmus" . ",";
+                  endforeach;
+
+                  foreach ($klpk as $dt):
+                    $kp = $dt->kelompok;
+                    $klp .= $kp . ",";
+                  endforeach;
+                  ?>
                 </div>
               </div>
             </div>
@@ -1037,8 +998,66 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('Backend/js/main.js') }}"></script>
-
-  @stack('js')
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      new ApexCharts(document.querySelector("#columnChart"), {
+        series: [{
+          name: 'Non Muslim',
+          // data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+          data: [{{ $nonMuslim }}]
+        }, {
+          name: 'Muslim',
+          data: [ {{ $muslim }} ]
+          // data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        }, 
+        // {
+        //   name: 'Free Cash Flow',
+        //   data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+        // }
+        ],
+        chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14'],
+          // categories: [ {{ $klp }} ],
+        },
+        yaxis: {
+          title: {
+            text: '$ (thousands)'
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function(val) {
+              // return "$ " + val + " thousands"
+              return val
+            }
+          }
+        }
+      }).render();
+    });
+  </script>
 
 </body>
 

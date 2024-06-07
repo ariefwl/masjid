@@ -17,21 +17,34 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        
+        $klp = kelompok::select('id')->count();
+        for ($i=1; $i <= $klp ; $i++) { 
+            $query = DB::table('penerimas')
+                        ->selectRaw("SUM(CASE WHEN type = '1' AND id_klp = '".$i."' THEN 1 ELSE 0 END) as non")
+                        ->selectRaw("SUM(CASE WHEN type = '0' AND id_klp = '".$i."' THEN 1 ELSE 0 END) as mus")
+                        ->first();
+            $type[] = $query;
+        };
+        // $qkel = DB::table('kelompoks')->select('kelompok')->get();
         $data = [
             'shohibul' => shohibul::orderBy('id', 'desc')->limit(5)->get(),
             'penerima' => penerima::count(),
             'kelompok' => kelompok::count(),
+            'klpk'     => kelompok::select('kelompok')->get(),
             'totalsapi' => DB::table('shohibuls as a')
-                        ->select('a.id_hewan')
-                        ->join('hewans as b', 'a.id_hewan','=','b.id')
-                        ->join('jenis as c','c.id','=','b.id_jenis')
-                        ->where('c.id','=', 1)
-                        ->groupBy('a.id_hewan')
-                        ->orderBy('a.id_hewan', 'DESC')
-                        ->limit(1)
-                        ->get(),
-            // 'klp' =>   
+            ->select('a.id_hewan')
+            ->join('hewans as b', 'a.id_hewan','=','b.id')
+            ->join('jenis as c','c.id','=','b.id_jenis')
+            ->where('c.id','=', 1)
+            ->groupBy('a.id_hewan')
+            ->orderBy('a.id_hewan', 'DESC')
+            ->limit(1)
+            ->get(),
         ];
+        // $data['klpk'] = $qkel;
+        $data['type'] = $type;
+        // dd($data['klpk']);
         // dd($data['totalsapi'][0]->{'id_hewan'});
         return view('frontend.dashboard.index', $data);
     }
