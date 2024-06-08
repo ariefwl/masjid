@@ -324,6 +324,11 @@
                                 <th>Telepon</th>
                             </tr>
                         </thead>
+                        <tfoot>
+                          <tr>
+                            <td colspan="4" style="font-style: italic; color: red"><span>* Bila ada kesalahan dalam penulisan identitas, mohon untuk menghubungi panitia</span></td>
+                          </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
