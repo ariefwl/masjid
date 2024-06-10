@@ -100,10 +100,41 @@ class DashboardController extends Controller
 
     public function groupSapi()
     {
-        $data = [
-            'shohibul' => shohibul::get()
-        ];
-        return view('frontend.dashboard.groupSapi');
+        // $klp = kelompok::select('id')->count();
+        // $shohibul = [];
+        // for ($i=1; $i <= $klp ; $i++) { 
+        //     $query = DB::table('shohibuls')
+        //                 ->select("nama")
+        //                 ->where('id_hewan','=',$i)
+        //                 ->get();
+        //     $shohibul[] = $query;
+        // };
+        // dd(compact('shohibul'));
+        // $data = [
+        //     'shohibul' => shohibul::get(),
+        //     'kelompok' => DB::table('shohibuls as a')
+        //                   ->select('b.id','b.nama_hewan')
+        //                   ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+        //                   ->groupBy('b.id')
+        //                   ->get()
+        // ];
+        // $kelompok = DB::table('shohibuls as a')
+        //             ->select('b.id', 'b.nama_hewan','b.foto1')
+                    // ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+                    // ->groupBy('b.id')
+                    // ->get();
+        // dd(compact('kelompok'));
+        // return view('frontend.dashboard.groupSapi', compact('kelompok','shohibul'));
+
+         // Query untuk mendapatkan data shohibul dan hewan yang berhubungan
+         $kelompok = DB::table('shohibuls as a')
+         ->select('b.id', 'b.nama_hewan', 'b.foto1', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
+         ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+         ->groupBy('b.id', 'b.nama_hewan', 'b.foto1')
+         ->get();
+        //  dd(compact('kelompok'));
+
+         return view('frontend.dashboard.groupSapi', compact('kelompok'));
     }
 
     public function kelompok(Request $request)
