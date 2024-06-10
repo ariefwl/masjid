@@ -21,7 +21,7 @@
         </div>
         @foreach ($kelompok as $kel )
         <div class="card col-lg-3 col-md-4">
-            <img src="{{ asset('Image/qurban/1445H'.$kel->foto1) }}" style="width: 100%; height: 200px; position: relative; overflow: hidden;" class="card-img-top mt-2" alt="{{ $kel->foto1 }}">
+            <img src="{{ asset('Image/qurban/1445H/'.$kel->foto1) }}" style="width: 100%; height: 200px; position: relative; overflow: hidden;" class="card-img-top mt-2" alt="{{ $kel->foto1 }}">
             <div class="card-body">
                 
               <h5 class="card-title">Kelompok {{ $kel->nama_hewan }}</h5>
