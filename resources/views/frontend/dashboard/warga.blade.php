@@ -28,9 +28,11 @@
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text">Filter Per Kelompok</span>
-                                    <select class="form-select" name="jenis" id="jenis">                                    
+                                    <select class="form-select" name="kelompok" id="kelompok">                                    
                                         <option value="all">-- Semua Kelompok --</option>
-                                        
+                                        @foreach ($kelompok as $item)
+                                            <option value="{{ $item->id }}">{{ $item->kelompok }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -66,36 +68,40 @@
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
 
     <script type="text/javascript">
-            $(document).ready(function(){
-                table = $('#tbl_penerima').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    language: {
-                        lengthMenu: 'Display _MENU_ records per page',
-                        zeroRecords: 'Nothing found - sorry',
-                        info: 'Showing page _PAGE_ of _PAGES_',
-                        infoEmpty: 'No records available',
-                        infoFiltered: '(filtered from _MAX_ total records)'
-                    },
-                    ajax: {
-                        url : '{{ url()->current() }}',
-                        data : function(data){
-                            data.kelompok = $('#kelompok').val();
-                        }
-                    },
-                    columns: [
-                        { data : 'DT_RowIndex'},
-                        { data : 'nama'},
-                        { data : 'alamat'}
-                    ],
-                    lengthChange: false,
-                    rowCallback: function(row, data, index){
-                        if(data.type == 1){
-                            $(row).find('td:eq(1)').css('color', 'blue');
-                        }
+        $(document).ready(function(){
+            table = $('#tbl_penerima').DataTable({
+                processing: true,
+                serverSide: true,
+                autoWidth: true,
+                language: {
+                    lengthMenu: 'Display _MENU_ records per page',
+                    zeroRecords: 'Nothing found - sorry',
+                    info: 'Showing page _PAGE_ of _PAGES_',
+                    infoEmpty: 'No records available',
+                    infoFiltered: '(filtered from _MAX_ total records)'
+                },
+                ajax: {
+                    url : '{{ url()->current() }}',
+                    data : function(data){
+                        data.kelompok = $('#kelompok').val();
                     }
-                })
+                },
+                columns: [
+                    { data : 'DT_RowIndex'},
+                    { data : 'nama'},
+                    { data : 'alamat'}
+                ],
+                lengthChange: false,
+                rowCallback: function(row, data, index){
+                    if(data.type == 1){
+                        $(row).find('td:eq(1)').css('color', 'blue');
+                    }
+                }
             })
+
+            $('#kelompok').on('change',function(){
+                table.ajax.reload();
+            })
+        })
     </script>
 @endpush

@@ -39,6 +39,13 @@
                                 </div>
                             </div>
                             <div class="row">
+
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+                                
                                 <div class="col-md-4">
                                     <form action="{{ route('exportExcel') }}" method="get">
                                         <div class="input-group">

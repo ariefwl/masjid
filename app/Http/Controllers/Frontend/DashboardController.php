@@ -55,41 +55,24 @@ class DashboardController extends Controller
             $jenis = $request->jenis;
             $kelompok = $request->kelompok;
 
-            if ($jenis == 'all' && $kelompok == 'all') {
-                $data = DB::table('shohibuls as a')
+            $query = DB::table('shohibuls as a')
                 ->select('a.nama', 'a.alamat', 'a.telp', 'b.nama_hewan', 'c.nama_jenis')
-                ->join('hewans as b','a.id_hewan','=','b.id')
-                ->join('jenis as c','b.id_jenis','=','c.id')
-                ->get();
-            } else if ($jenis == '2') {
-                $data = DB::table('shohibuls as a')
-                ->select('a.nama', 'a.alamat', 'a.telp', 'b.nama_hewan', 'c.nama_jenis')
-                ->join('hewans as b','a.id_hewan','=','b.id')
-                ->join('jenis as c','b.id_jenis','=','c.id')
-                ->where('c.id','=', 2)
-                ->get();
-            } else if ($jenis == '1' && $kelompok == 'all'){
-                $data = DB::table('shohibuls as a')
-                ->select('a.nama', 'a.alamat', 'a.telp', 'b.nama_hewan', 'c.nama_jenis')
-                ->join('hewans as b','a.id_hewan','=','b.id')
-                ->join('jenis as c','b.id_jenis','=','c.id')
-                ->where('c.id','=', 1)
-                // ->where('b.id', '=', $kelompok)
-                ->get();
-            } else {
-                $data = DB::table('shohibuls as a')
-                ->select('a.nama', 'a.alamat', 'a.telp', 'b.nama_hewan', 'c.nama_jenis')
-                ->join('hewans as b','a.id_hewan','=','b.id')
-                ->join('jenis as c','b.id_jenis','=','c.id')
-                ->where('c.id','=', $jenis)
-                ->where('b.id', '=', $kelompok)
-                ->get();
+                ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+                ->join('jenis as c', 'b.id_jenis', '=', 'c.id');
+
+            if ($jenis != 'all') {
+                $query->where('c.id', '=', $jenis);
             }
-            
-            // dd($data);
+
+            if ($kelompok != 'all') {
+                $query->where('b.id', '=', $kelompok);
+            }
+
+            $data = $query->get();
+
             return DataTables::of($data)
-                   ->addIndexColumn()
-                   ->make();
+                ->addIndexColumn()
+                ->make();
         }
         $dt = [
             'jenis' => jenis::get(),
@@ -100,32 +83,6 @@ class DashboardController extends Controller
 
     public function groupSapi()
     {
-        // $klp = kelompok::select('id')->count();
-        // $shohibul = [];
-        // for ($i=1; $i <= $klp ; $i++) { 
-        //     $query = DB::table('shohibuls')
-        //                 ->select("nama")
-        //                 ->where('id_hewan','=',$i)
-        //                 ->get();
-        //     $shohibul[] = $query;
-        // };
-        // dd(compact('shohibul'));
-        // $data = [
-        //     'shohibul' => shohibul::get(),
-        //     'kelompok' => DB::table('shohibuls as a')
-        //                   ->select('b.id','b.nama_hewan')
-        //                   ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
-        //                   ->groupBy('b.id')
-        //                   ->get()
-        // ];
-        // $kelompok = DB::table('shohibuls as a')
-        //             ->select('b.id', 'b.nama_hewan','b.foto1')
-                    // ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
-                    // ->groupBy('b.id')
-                    // ->get();
-        // dd(compact('kelompok'));
-        // return view('frontend.dashboard.groupSapi', compact('kelompok','shohibul'));
-
          // Query untuk mendapatkan data shohibul dan hewan yang berhubungan
          $kelompok = DB::table('shohibuls as a')
          ->select('b.id', 'b.nama_hewan', 'b.foto1', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
@@ -153,9 +110,13 @@ class DashboardController extends Controller
     {
         if (request()->ajax()) {
             $kelompok = $request->kelompok;
-            $data = DB::table('penerimas')
-            ->select('nama','alamat','type')
-            ->get();
+            $query = DB::table('penerimas')
+            ->select('nama','alamat','type');
+            
+            if ($kelompok != 'all') {
+                $query->where('id_klp', '=', $kelompok);
+            }
+            $data = $query->get();
 
             return DataTables::of($data)->addIndexColumn()->make();
         }

@@ -99,9 +99,25 @@ class PenerimaController extends Controller
         return Excel::download(new ExportPenerima($klp), 'penerima.xlsx', null, [\Maatwebsite\Excel\Excel::XLSX]);
     }
 
-    public function importData()
+    public function importData(Request $request)
     {
-        Excel::import(new ImportPenerima, request()->file('file'));
-        return redirect()->back();
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+        
+        Excel::import(new ImportPenerima, $request->file('file'));
+
+        // Filter duplicate entries
+        $uniqueData = penerima::select('id_klp', 'nama', 'alamat', 'type', 'status')
+                          ->distinct()
+                          ->get();
+        
+        // Clear the table and re-insert unique data
+        penerima::truncate();
+        foreach ($uniqueData as $data) {
+            penerima::create($data->toArray());
+        }
+
+        return redirect('/penerima')->with('success', 'Data berhasil di upload !');
     }
 }
