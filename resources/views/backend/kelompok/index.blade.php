@@ -1,4 +1,4 @@
-@extends('layout.layout');
+@extends('backend.layout.layout');
 
 @push('css')
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> --}}

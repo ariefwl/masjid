@@ -39,15 +39,16 @@
   ======================================================== -->
 </head>
 
-<body class="toggle-sidebar">
+{{-- <body class="toggle-sidebar"> --}}
+  <body>
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('dashboard') }}" class="logo d-flex align-items-center">
-        <img src="{{ asset('Backend/img/logo.png') }}" alt="" >
-        <span class="d-none d-lg-block">Al - Istiqomah</span>
+        <img src="{{ asset('Image/logo1.png') }}" alt="" >
+        {{-- <span class="d-none d-lg-block">Al - Istiqomah</span> --}}
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -275,7 +276,7 @@
   </header><!-- End Header -->
 
   {{-- Sidebar --}}
-  @include('layout.sidebar')
+  @include('backend.layout.sidebar')
 
   @yield('main')
 
@@ -298,12 +299,12 @@
   <!-- Vendor JS Files -->
   <script src="{{ asset('Backend/vendor/apexcharts/apexcharts.min.js') }}"></script>
   <script src="{{ asset('Backend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('Backend/vendor/chart.js/chart.umd.js') }}"></script>
-  <script src="{{ asset('Backend/vendor/echarts/echarts.min.js') }}"></script>
-  <script src="{{ asset('Backend/vendor/quill/quill.min.js') }}"></script>
+  {{-- <script src="{{ asset('Backend/vendor/chart.js/chart.umd.js') }}"></script> --}}
+  {{-- <script src="{{ asset('Backend/vendor/echarts/echarts.min.js') }}"></script> --}}
+  {{-- <script src="{{ asset('Backend/vendor/quill/quill.min.js') }}"></script> --}}
   {{-- <script src="{{ asset('Backend/vendor/simple-datatables/simple-datatables.js') }}"></script> --}}
-  <script src="{{ asset('Backend/vendor/tinymce/tinymce.min.js') }}"></script>
-  <script src="{{ asset('Backend/vendor/php-email-form/validate.js') }}"></script>
+  {{-- <script src="{{ asset('Backend/vendor/tinymce/tinymce.min.js') }}"></script> --}}
+  {{-- <script src="{{ asset('Backend/vendor/php-email-form/validate.js') }}"></script> --}}
 
   <!-- Template Main JS File -->
   <script src="{{ asset('Backend/js/main.js') }}"></script>

@@ -1,4 +1,4 @@
-@extends('layout.layout');
+@extends('backend.layout.layout');
 
 @section('judul', 'Dashboard UPQ | Al - Istiqomah')
     

@@ -1,9 +1,12 @@
-@extends('layout.layout');
+@extends('backend.layout.layout');
 
 @push('css')
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"> --}}
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css">
 @endpush
 
 @section('judul', 'Penerima Qurban | Al - Istiqomah');
@@ -41,7 +44,7 @@
                             <div class="row">
 
                                 @if (session('success'))
-                                    <div class="alert alert-success">
+                                    <div class="alert alert-success col-md-4">
                                         {{ session('success') }}
                                     </div>
                                 @endif
@@ -71,7 +74,7 @@
                                 </div>
                             </div>
                             
-                            <table id="tbl_penerima" class="table table-bordered table-striped" style="width: 100%">
+                            <table id="tbl_penerima" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -145,15 +148,23 @@
 
 @push('js')
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
-    {{-- <script src="{{ asset('Backend/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script> --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script> --}}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/4.0.1/js/dataTables.fixedHeader.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/4.0.1/js/fixedHeader.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
             table = $('#tbl_penerima').DataTable({
+                fixHeader: true,
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 autoWidth: true,

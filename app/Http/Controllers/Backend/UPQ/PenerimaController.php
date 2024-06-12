@@ -42,7 +42,7 @@ class PenerimaController extends Controller
         $data = [
             'kelompok' => kelompok::all()->pluck('id','kelompok')
         ];
-        return view('backend.upq.penerima.index', $data);
+        return view('backend.takmir.upq.penerima.index', $data);
     }
 
     /**

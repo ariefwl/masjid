@@ -1,8 +1,11 @@
 @extends('frontend.layout.layout')
 
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css">
+    {{-- <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"> --}}
 @endpush
 
 @section('main')
@@ -48,7 +51,8 @@
                             </div>
                         </div>
                     </div>
-                    <table id="tbl_shohibul" class="table table-bordered table-striped">
+                    {{-- <table id="tbl_shohibul" class="table table-bordered table-striped"> --}}
+                    <table id="tbl_shohibul" class="display nowrap">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -74,13 +78,19 @@
 
 @push('js')
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
-  <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+  {{-- <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script> --}}
+  {{-- <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script> --}}
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/4.0.1/js/dataTables.fixedHeader.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/4.0.1/js/fixedHeader.dataTables.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 
 
   <script type="text/javascript">
         $(document).ready(function(){
            table = $('#tbl_shohibul').DataTable({
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 autoWidth: true,

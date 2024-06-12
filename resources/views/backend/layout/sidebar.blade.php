@@ -31,7 +31,7 @@
             </a>
           </li>
           <li>
-            <a class="" href="{{ url('shohibul'); }}">
+            <a class="" href="{{ url('hewan'); }}">
               <i class="bi bi-circle"></i><span>Hewan Qurban</span>
             </a>
           </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\KelompokController;
+use App\Http\Controllers\Backend\UPQ\HewanController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
 use App\Http\Controllers\Backend\UPQ\ShohibulController;
 use App\Http\Controllers\Frontend\DashboardController;
@@ -15,7 +16,7 @@ Route::get('/kel', [DashboardController::class, 'kelompok']);
 Route::get('/warga', [DashboardController::class, 'warga'])->name('dashboard.warga');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('backend.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth', 'AdminUPQ')->group(function(){
@@ -23,6 +24,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::post('/penerima/importData', [PenerimaController::class, 'importData'])->name('importData');
     Route::resource('penerima', PenerimaController::class);
     Route::resource('shohibul', ShohibulController::class);
+    Route::resource('hewan', HewanController::class);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){

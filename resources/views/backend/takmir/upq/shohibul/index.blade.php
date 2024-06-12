@@ -1,8 +1,14 @@
-@extends('layout.layout');
+@extends('backend.layout.layout');
 
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="{{ asset('Backend/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"> --}}
+
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css">
+
 @endpush
 
 @section('judul', 'Shohibul Qurban | Al - Istiqomah');
@@ -31,35 +37,49 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-4">
+                                {{-- <div class="row mb-2">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <a href="{{ url('/') }}" type="button" class="btn btn-circle btn-sm btn-success">
+                                            <b> <i class="ri-logout-circle-line"></i> Kembali</b>
+                                        </a>
+                                    </div>
+                                </div> --}}
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <span class="input-group-text">Filter data</span>
+                                        <span class="input-group-text">Filter Jenis Qurban</span>
                                         <select class="form-select" name="jenis" id="jenis">                                    
                                             <option value="all">-- Semua Jenis --</option>
-                                            <option value="0">Kambing</option>
-                                            <option value="11">Kelompok Sapi 1</option>
-                                            <option value="12">Kelompok Sapi 2</option>
-                                            <option value="13">Kelompok Sapi 3</option>
-                                            <option value="14">Kelompok Sapi 4</option>
+                                            <?php foreach ($jenis as $key) { ?>
+                                              <option value="{{ $key['id'] }}">{{ $key['nama_jenis'] }}</option>
+                                            <?php } ?>
                                         </select>
-                                        <button type="submit" class="btn btn-success btn-sm btn-circle"><b><i class="ri-file-excel-2-line"></i> Export Xls</b></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Filter Kelompok Sapi</span>
+                                        <select disabled class="form-select" name="kelompok" id="kelompok">                                    
+                                            <option value="all">-- Semua Kelompok --</option>
+                                            <?php foreach ($kelompokSapi as $key) { ?>
+                                              <option value="{{ $key['id'] }}">Kelompok {{ $key['nama_hewan'] }}</option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <table id="tbl_shohibul" class="table table-bordered table-striped table-auto">
+                            <table id="tbl_shohibul" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Shohibul</th>
                                         <th>Alamat</th>
                                         <th>No. Telepon</th>
-                                        <th>Jenis Qurban</th>
+                                        {{-- <th>Jenis Qurban</th> --}}
                                         <th>Proses</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -101,12 +121,10 @@
                           <label for="inputText" class="col-sm-4 col-form-label">Hewan Qurban</label>
                           <div class="col-sm-8">
                             <select name="id_klp" id="id_klp" class="form-select">
-                                <option value="">-- Jenis --</option>
-                                <option value="0">Kambing</option>
-                                <option value="11">Kelompok Sapi 1</option>
-                                <option value="12">Kelompok Sapi 2</option>
-                                <option value="13">Kelompok Sapi 3</option>
-                                <option value="14">Kelompok Sapi 4</option>
+                                <option value="">-- Hewan Qurban --</option>
+                                @foreach ($hewanQurban as $dt)
+                                    <option value="{{ $dt->id }}">{{ $dt->nama_hewan }}</option>
+                                @endforeach
                             </select>
                           </div>
                         </div>                    
@@ -123,13 +141,23 @@
 @endsection
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script> --}}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/4.0.1/js/dataTables.fixedHeader.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/4.0.1/js/fixedHeader.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
-            tabel = $('#tbl_shohibul').DataTable({
+            table = $('#tbl_shohibul').DataTable({
+                fixHeader: true,
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 autoWidth: true,
@@ -144,6 +172,7 @@
                     url : '{{ url()->current() }}',
                     data : function(data){
                         data.jenis = $('#jenis').val();
+                        data.kelompok = $('#kelompok').val();
                     }
                 },
                 columns: [
@@ -151,11 +180,31 @@
                     { data : 'nama', name : 'nama'},
                     { data : 'alamat', name : 'alamat'},
                     { data : 'telp', name : 'telp'},
-                    { data : 'jenis', name : 'jenis'},
+                    // { data : 'jenis', name : 'jenis'},
                     { data : 'button', name : 'button'}
                 ],
                 lengthChange: false,
             })
+
+            $('#jenis').on('change', function(){
+                if($('#jenis').val() == 1){
+                document.getElementById("kelompok").disabled=false;
+                }else{
+                document.getElementById("kelompok").disabled=true;
+                }
+                table.ajax.reload(); 
+            })
+
+            $('#kelompok').on('change', function(){
+                // alert($('#kelompok').val());
+                table.ajax.reload(); 
+            })
+
+            $('#test').on('click', function(){
+                alert('test');
+            })
+            
         })
+
     </script>
 @endpush
