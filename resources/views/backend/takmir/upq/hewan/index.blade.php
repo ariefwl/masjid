@@ -66,7 +66,7 @@
                   <h5 class="modal-title"><b>Tambah Hewan Qurban</b></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('penerima.store') }}" enctype="multipart/form-data">
+                <form id="form" method="POST" action="{{ route('hewan.store') }}" enctype="multipart/form-data">
                   @csrf
                     <div class="modal-body">
                         <div class="row mb-3">
@@ -76,9 +76,15 @@
                           </div>
                         </div>
                         <div class="row mb-3">
-                          <label for="jenis" class="col-4 col-form-label">Jenis</label>
+                          <label for="jenis" class="col-4 col-form-label">Kategori</label>
                           <div class="col-sm-8">
-                            <input type="text" id="jenis" name="jenis" class="form-control">
+                            {{-- <input type="text" id="kategori" name="kategori" class="form-control"> --}}
+                            <select name="kategori" id="kategori" class="form-select">
+                                <option value="">-- Pilih Kategori --</option>
+                                @foreach ($kategori as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama_jenis'] }}</option>
+                                @endforeach
+                            </select>
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -98,12 +104,13 @@
                             <div class="col-sm-8">
                                 <input type="file" name="gbr" id="gbr" class="form-control">
                                 <img id="prev" name="prev" alt="" class="mt-2 img-thumbnail" style="max-width: 100px;">    
+                                {{-- <div class="preview"></div> --}}
                             </div>   
                         </div>               
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" id="simpan">Simpan</button>
+                        <button type="submit" class="btn btn-primary" id="simpan">Simpan</button>
                     </div>
                 </form>
               </div>
@@ -121,14 +128,6 @@
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 
-{{-- <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script> --}}
-{{-- <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script> --}}
-
-{{-- <script src="{{ asset('Backend/vendor/datatables-responsive/js/jquery-1.12.3.js') }}"></script> --}}
-{{-- <script src="{{ asset('Backend/vendor/datatables-responsive/js/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('Backend/vendor/datatables-responsive/js/dataTables.bootstrap4.js') }}"></script>
-<script src="{{ asset('Backend/vendor/datatables-responsive/js/dataTables.responsive.js') }}"></script>
-<script src="{{ asset('Backend/vendor/datatables-responsive/js/responsive.bootstrap4.js') }}"></script> --}}
 <script type="text/javascript">
     $(document).ready(function(){
         table = $('#tbl_hewan').DataTable({
@@ -160,15 +159,35 @@
             ],
             lengthChange: false
         })
+
+        $('#form').on('submit', function(e){
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            $.ajax({
+                url : "{{ route('hewan.store') }}",
+                type : "POST",
+                data : formData,
+                contentType : false,
+                processData : false,
+                success : function(response){
+                    // $('#successMessage').text(response.success).show();
+                    // $('#photoPreview').hide();
+                    $('#form')[0].reset();
+                    $('#disablebackdrop').modal('hide');
+                    table.ajax.reload();
+                }
+            })
+        })
     })
 
     document.getElementById('gbr').onchange = function (evt) {
-            var [file] = evt.target.files;
-            if (file) {
-                var preview = document.getElementById('prev');
-                preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
-            }
-        };
+        var [file] = evt.target.files;
+        if (file) {
+            var preview = document.getElementById('prev');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    };
 </script>
 @endpush

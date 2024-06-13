@@ -85,9 +85,9 @@ class DashboardController extends Controller
     {
          // Query untuk mendapatkan data shohibul dan hewan yang berhubungan
          $kelompok = DB::table('shohibuls as a')
-         ->select('b.id', 'b.nama_hewan', 'b.foto1', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
+         ->select('b.id', 'b.nama_hewan', 'b.foto', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
          ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
-         ->groupBy('b.id', 'b.nama_hewan', 'b.foto1')
+         ->groupBy('b.id', 'b.nama_hewan', 'b.foto')
          ->get();
         //  dd(compact('kelompok'));
 

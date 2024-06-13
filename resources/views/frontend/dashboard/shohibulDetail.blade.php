@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     {{-- <table id="tbl_shohibul" class="table table-bordered table-striped"> --}}
-                    <table id="tbl_shohibul" class="display nowrap">
+                    <table id="tbl_shohibul" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/shohibulDetail', [DashboardController::class, 'shohibulDetail']);
 Route::get('/groupSapi', [DashboardController::class, 'groupSapi']);

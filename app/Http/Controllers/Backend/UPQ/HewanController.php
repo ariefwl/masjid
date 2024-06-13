@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Backend\UPQ;
 
 use App\Http\Controllers\Controller;
 use App\Models\hewan;
+use App\Models\jenis;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class HewanController extends Controller
@@ -21,13 +24,14 @@ class HewanController extends Controller
                     ->addIndexColumn()
                     ->addColumn('button',function($data){
                         return '<div class="text-center">
-                                <button type="button" class="btn btn-outline-success btn-sm"><i class="bi bi-star me-1"></i></button>
+                                <button type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></button>
                                 </div>';
                     })
                     ->rawColumns(['button'])
                     ->make();
         }
-        return view('backend.takmir.upq.hewan.index');
+        $kategori = jenis::get();
+        return view('backend.takmir.upq.hewan.index', compact('kategori'));
     }
 
     /**
@@ -43,7 +47,26 @@ class HewanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi = Validator::make($request->all(),[
+            'gbr' => 'image|mimes:jpeg,png,jpg,bmp|max:2048'
+        ]);
+
+        if ($request->hasFile('gbr')) {
+            $gbr = $request->file('gbr');
+            $gbrname = date('YmdHis') . '.' . $gbr->getClientOriginalExtension();
+            $gbr->move(public_path('Image/qurban/1445H'), $gbrname);
+            $data = new hewan(); 
+            $data->id_jenis = $request->input('kategori');
+            $data->nama_hewan = $request->input('nama');
+            $data->umur = $request->input('umur');
+            $data->bobot = $request->input('bobot');
+            $data->foto = $gbrname;
+            // dd($data);
+            $data->save();
+    
+            return response()->json(['success' => 'Data berhasil disimpan.']);
+        }
+        return response()->json(['success' => 'Data tidak bisa di simpan !.']);
     }
 
     /**
