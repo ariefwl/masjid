@@ -18,9 +18,9 @@
                 <li class="breadcrumb-item active">Master Data</li>
               </ol>
             </nav>
-            <button type="button" class="btn btn-circle btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">
+            <button onclick="add()" class="btn btn-circle btn-sm btn-primary">
                 <b>Tambah Data</b>
-              </button>
+            </button>
             {{-- <a href="{{ url('kelompok/create') }}" class="btn btn-circle btn-primary btn-sm" style="font-weight: 600;"><b>Tambah Data</b></a> --}}
         </div>
 
@@ -47,50 +47,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"><b>Tambah Data Kelompok</b></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ url('kelompok') }}" method="POST">
-                  @csrf
-                    <div class="modal-body">
-                        <div class="row mb-3">
-                          <label for="inputText" class="col-sm-4 col-form-label">Kelompok</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="klmpk" name="klmpk" class="form-control">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="koor" class="col-4 col-form-label">Nama Koordinator</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="koor" name="koor" class="form-control">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="alamat" class="col-4 col-form-label">Alamat</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="alamat" name="alamat" class="form-control">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="telp" class="col-4 col-form-label">Telepon</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="telp" name="telp" class="form-control">
-                          </div>
-                        </div>                            
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-              </div>
-            </div>
-        </div>
+@includeIf('backend.kelompok.form')
     </main>
 @endsection
 
@@ -104,7 +61,13 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#tbl_kelompok').DataTable({
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            table = $('#tbl_kelompok').DataTable({
                 processing: true,
                 serverSide: true,
                 autoWidth: true,
@@ -127,6 +90,73 @@
                     { data : 'button', name : 'button'}
                 ]
             })
+
+            $('#frmKlp').on('submit', function (e) {
+                if($('#status').val() == 'edit'){
+                    $type = 'put';
+                }else{
+                    $type = 'post';
+                }
+                if (! e.preventDefault()){
+                    $.ajax({
+                        url : $('#frmKlp').attr('action'),
+                        // url: "{{ route('kelompok.store') }}",
+                        type: $type,
+                        data: {
+                            // "_token": $('#token').val(),
+                          'kelompok' : $('#kelompok').val(),
+                          'koordinator' : $('#koordinator').val(),
+                          'telepon' : $('#telp').val(),
+                          'alamat' : $('#alamat').val() 
+                        },                        
+                        dataType: 'json',
+                        success: function(data){
+                            $('#modalKlp').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(data){
+                            alert('Data gagal di simpan !');
+                            return;
+                        }
+                    })
+                }
+            })
         })
+
+        function add(url)
+        {
+            $('#modalKlp').modal('show');
+            $('#modalKlp .modal-title').html('<b>Tambah Data Kelompok</b>');
+            
+            $('#frmKlp')[0].reset();
+            $('#frmKlp').attr('action', url);
+            $('#frmKlp [name=_method]').val('post');
+            // $('#kelompok').focus();
+        }
+
+        function edit(url)
+        {
+            // alert(url);
+            $('#modalKlp').modal('show');
+            $('#modalKlp .modal-title').html('<b>Edit Data Kelompok</b>');
+
+            $('#frmKlp')[0].reset();
+            $('#frmKlp').attr('action', url);
+            // $('#frmKlp [name=_method]').val('PUT');
+
+            $.get(url)
+                .done((response) => {
+                    $('#kelompok').val(response.kelompok);
+                    $('#koordinator').val(response.koordinator);
+                    $('#alamat').val(response.alamat);
+                    $('#telp').val(response.telp);
+                    $('#status').val('edit');
+                    $('#btnProses').html('Update');
+                })
+                .fail((errors) => {
+                    alert('Tidak ada data !');
+                })
+        }
+
     </script>
 @endpush

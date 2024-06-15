@@ -19,10 +19,12 @@ class KelompokController extends Controller
             return DataTables::of($data)
                    ->addIndexColumn()
                    ->addColumn('button', function($data){
-                       return '<div class="text-center">
-                                   <a href="artikel/'.$data->id.'/edit" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                   <a href="#" onclick="deleteArtikel(this)" data-id="'.$data->id.'" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
-                               </div>';
+                       return '
+                        <div class="btn-group">
+                            <button onclick="edit(`'. route('kelompok.update', $data->id) .'`)" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                            <a href="#" onclick="deleteArtikel(this)" data-id="'.$data->id.'" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
+                        </div>
+                        ';
                    })
                    ->rawColumns(['button'])
                    ->make();
@@ -43,7 +45,16 @@ class KelompokController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'kelompok' => $request->kelompok,
+            'koordinator' => $request->koordinator,
+            'telp' => $request->telepon,
+            'alamat' => $request->alamat
+        ];
+        // dd($data);
+        Kelompok::create($data);
+        return response()->json(['success' => 'Data kelompok berhasil di tambahkan !']);
+        // return redirect(url('kelompok'));
     }
 
     /**
@@ -51,7 +62,9 @@ class KelompokController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = kelompok::find($id);
+        // dd($data);
+        return response()->json($data);
     }
 
     /**
@@ -67,7 +80,15 @@ class KelompokController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = kelompok::find($id);
+        $data->update([
+            'kelompok' => $request->kelompok,
+            'koordinator' => $request->koordinator,
+            'alamat' => $request->alamat,
+            'telp' => $request->telepon
+        ]);
+
+        return response()->json(['success' => 'Data kelompok berhasil di tambahkan !']);
     }
 
     /**

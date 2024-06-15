@@ -26,7 +26,7 @@
             </a>
           </li>
           <li>
-            <a class="" href="{{ route('kelompok'); }}">
+            <a class="" href="{{ route('kelompok.index'); }}">
               <i class="bi bi-circle"></i><span>Kelompok</span>
             </a>
           </li>

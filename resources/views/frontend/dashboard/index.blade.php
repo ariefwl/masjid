@@ -77,14 +77,14 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Kambing <span>| <a href="">Lihat detail</a></span></h5>
+                  <h5 class="card-title">Kambing <span>| <a href="{{ url('groupKambing'); }}">Lihat detail</a></span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="ri-bug-line"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>- Ekor</h6>
+                      <h6><?= $totalkambing ?> Ekor</h6>
                       {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
                     </div>

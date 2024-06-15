@@ -13,6 +13,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/shohibulDetail', [DashboardController::class, 'shohibulDetail']);
 Route::get('/groupSapi', [DashboardController::class, 'groupSapi']);
+Route::get('/groupKambing', [DashboardController::class, 'groupKambing']);
 Route::get('/kel', [DashboardController::class, 'kelompok']);
 Route::get('/warga', [DashboardController::class, 'warga'])->name('dashboard.warga');
 
@@ -33,7 +34,8 @@ Route::middleware('auth', 'AdminUPZ')->group(function(){
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/kelompok', [KelompokController::class, 'index'])->name('kelompok');
+    // Route::get('/kelompok', [KelompokController::class, 'index'])->name('kelompok');
+    Route::resource('kelompok', KelompokController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

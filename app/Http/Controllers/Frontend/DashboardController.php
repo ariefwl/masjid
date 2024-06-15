@@ -41,11 +41,14 @@ class DashboardController extends Controller
             ->orderBy('a.id_hewan', 'DESC')
             ->limit(1)
             ->get(),
+            'totalkambing' => DB::table('hewans')
+            ->where('id_jenis', 2)
+            ->count('id_jenis')
         ];
+        // dd($data['totalkambing']);
         // $data['klpk'] = $qkel;
         $data['type'] = $type;
         // dd($data['klpk']);
-        // dd($data['totalsapi'][0]->{'id_hewan'});
         return view('frontend.dashboard.index', $data);
     }
 
@@ -87,11 +90,27 @@ class DashboardController extends Controller
          $kelompok = DB::table('shohibuls as a')
          ->select('b.id', 'b.nama_hewan', 'b.foto', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
          ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+         ->join('jenis as c', 'c.id', '=', 'b.id_jenis')
+         ->where('c.id', 1)
          ->groupBy('b.id', 'b.nama_hewan', 'b.foto')
          ->get();
-        //  dd(compact('kelompok'));
+         $title = 'Kelompok Qurban Sapi';
+         return view('frontend.dashboard.groupSapi', compact('kelompok','title'));
+        }
+        
+        public function groupKambing()
+        {
+            // Query untuk mendapatkan data shohibul dan hewan yang berhubungan
+            $kelompok = DB::table('shohibuls as a')
+            ->select('b.id', 'b.nama_hewan', 'b.foto', DB::raw('GROUP_CONCAT(a.nama) as shohibul_names'))
+            ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
+            ->join('jenis as c', 'c.id', '=', 'b.id_jenis')
+            ->where('c.id', 2)
+            ->groupBy('b.id', 'b.nama_hewan', 'b.foto')
+            ->get();
+            $title = 'Kelompok Qurban Kambing';
 
-         return view('frontend.dashboard.groupSapi', compact('kelompok'));
+        return view('frontend.dashboard.groupSapi', compact('kelompok','title'));
     }
 
     public function kelompok(Request $request)

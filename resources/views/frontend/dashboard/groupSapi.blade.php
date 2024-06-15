@@ -7,7 +7,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1><b>Daftar Kelompok Qurban Sapi</b></h1>
+      <h1><b>{{ $title }}</b></h1>
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -24,7 +24,7 @@
             <img src="{{ asset('Image/qurban/1445H/'.$kel->foto) }}" style="width: 100%; height: 200px; position: relative; overflow: hidden;" class="card-img-top mt-2" alt="{{ $kel->foto }}">
             <div class="card-body">
                 
-              <h5 class="card-title">Kelompok {{ $kel->nama_hewan }}</h5>
+              <h5 class="card-title">{{ $kel->nama_hewan }}</h5>
 
               <strong>Shohibul Qurban:</strong>
               <ul>
