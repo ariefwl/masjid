@@ -40,7 +40,6 @@ class ShohibulController extends Controller
                        return '<div class="text-center">
                                    <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
                                    <a href="#" onclick="deleteArtikel(this)" data-id="" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
-                                   <button class="btn btn-sm btn-danger" id="test">test</button>
                                </div>';
                    })
                    ->rawColumns(['button'])

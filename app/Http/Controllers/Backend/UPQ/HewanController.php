@@ -24,7 +24,7 @@ class HewanController extends Controller
                     ->addIndexColumn()
                     ->addColumn('button',function($data){
                         return '<div class="text-center">
-                                <button type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                <button onclick="edit(`'. route('kelompok.update', $data->id) .'`)" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></button>
                                 </div>';
                     })
                     ->rawColumns(['button'])

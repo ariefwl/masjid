@@ -22,7 +22,6 @@ class KelompokController extends Controller
                        return '
                         <div class="btn-group">
                             <button onclick="edit(`'. route('kelompok.update', $data->id) .'`)" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
-                            <a href="#" onclick="deleteArtikel(this)" data-id="'.$data->id.'" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
                         </div>
                         ';
                    })

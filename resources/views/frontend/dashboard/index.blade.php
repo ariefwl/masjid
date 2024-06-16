@@ -170,36 +170,7 @@
             </div>
             <!-- End Penerima Card -->
 
-            {{-- Chart Warga --}}
-            <div class="col-lg-12">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Penerima Qurban Per Kelompok</h5>
-                  
-                  <!-- Column Chart -->
-                  <div id="columnChart"></div>
-                  <!-- End Column Chart -->
-                  <?php 
-                  $muslim = "";
-                  $nonMuslim = "";
-                  $klp = ""; 
-
-                  foreach ($type as $dt ):
-                    $mus =  $dt->mus; 
-                    $muslim .= "$mus" . ",";
-                    
-                    $nmus = $dt->non;
-                    $nonMuslim .= "$nmus" . ",";
-                  endforeach;
-
-                  foreach ($klpk as $dt):
-                    $kp = $dt->kelompok;
-                    $klp .= $kp . ",";
-                  endforeach;
-                  ?>
-                </div>
-              </div>
-            </div>
+            
 
             <!-- Reports -->
             {{-- <div class="col-12">
@@ -696,6 +667,39 @@
 
         </div><!-- End Right side columns -->
 
+        <div class="col lg-12">
+          {{-- Chart Penerima --}}
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Penerima Qurban Per Kelompok</h5>
+                
+                <!-- Column Chart -->
+                <div id="columnChart"></div>
+                <!-- End Column Chart -->
+                <?php 
+                $muslim = "";
+                $nonMuslim = "";
+                $klp = ""; 
+
+                foreach ($type as $dt ):
+                  $mus =  $dt->mus; 
+                  $muslim .= "$mus" . ",";
+                  
+                  $nmus = $dt->non;
+                  $nonMuslim .= "$nmus" . ",";
+                endforeach;
+
+                foreach ($klpk as $dt):
+                  $kp = $dt->kelompok;
+                  $klp .= $kp . ",";
+                endforeach;
+                ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -740,7 +744,7 @@
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14', 'Khotib', 'Pengurus', 'Ponpes'],
+        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14', 'Khotib', 'Pengurus', 'Ponpes', 'Panitia Tambahan','Parkir Untung','Parkir Papang','Pasar Rasamala','Parkir Sarinah','Tugu Beton','Ojek Pasar','Ojek Online','Relawan','Pasar Pisang'],
         // categories: [ {{ $klp }} ],
       },
       yaxis: {
