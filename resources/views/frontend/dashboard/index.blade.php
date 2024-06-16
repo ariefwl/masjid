@@ -49,7 +49,7 @@
                       <i class="bi bi-github"></i>
                     </div>
                     <div class="ps-3">
-                      <h6><?= $totalsapi[0]->{'id_hewan'} ?> Ekor</h6>
+                      <h6><?= $totalsapi ?> Ekor</h6>
                       {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
                     </div>
@@ -174,7 +174,7 @@
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Jumlah Penerima Qurban Per Kelompok</h5>
+                  <h5 class="card-title">Penerima Qurban Per Kelompok</h5>
                   
                   <!-- Column Chart -->
                   <div id="columnChart"></div>
@@ -740,7 +740,7 @@
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14'],
+        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14', 'Khotib', 'Pengurus', 'Ponpes'],
         // categories: [ {{ $klp }} ],
       },
       yaxis: {

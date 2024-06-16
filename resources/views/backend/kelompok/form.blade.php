@@ -36,7 +36,13 @@
                   <div class="col-sm-8">
                     <input type="text" id="telp" name="telp" class="form-control">
                   </div>
-                </div>                            
+                </div>      
+                <div class="row mb-3 form-check form-switch">
+                  <label class="col-form-label col-4" for="flexSwitchCheckChecked">Status</label>
+                  <div class="col-sm-8">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                  </div>
+                </div>                      
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -32,20 +32,23 @@ class DashboardController extends Controller
             'penerima' => penerima::count(),
             'kelompok' => kelompok::count(),
             'klpk'     => kelompok::select('kelompok')->get(),
-            'totalsapi' => DB::table('shohibuls as a')
-            ->select('a.id_hewan')
-            ->join('hewans as b', 'a.id_hewan','=','b.id')
-            ->join('jenis as c','c.id','=','b.id_jenis')
-            ->where('c.id','=', 1)
-            ->groupBy('a.id_hewan')
-            ->orderBy('a.id_hewan', 'DESC')
-            ->limit(1)
-            ->get(),
+            // 'totalsapi' => DB::table('shohibuls as a')
+            // ->select('a.id_hewan')
+            // ->join('hewans as b', 'a.id_hewan','=','b.id')
+            // ->join('jenis as c','c.id','=','b.id_jenis')
+            // ->where('c.id','=', 1)
+            // ->groupBy('a.id_hewan')
+            // ->orderBy('a.id_hewan', 'DESC')
+            // ->limit(1)
+            // ->get(),
+            'totalsapi' => DB::table('hewans')
+            ->where('id_jenis', 1)
+            ->count('id_jenis'),
             'totalkambing' => DB::table('hewans')
             ->where('id_jenis', 2)
             ->count('id_jenis')
         ];
-        // dd($data['totalkambing']);
+        // dd($data['totalsapi']);
         // $data['klpk'] = $qkel;
         $data['type'] = $type;
         // dd($data['klpk']);
