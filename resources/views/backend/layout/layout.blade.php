@@ -49,7 +49,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ url('dashboard') }}" class="logo d-flex align-items-center">
-        <img src="{{ asset('Image/logo1.png') }}" alt="" >
+        <img src="{{ asset('Image/logo1.png') }}" style="max-height: 85px;" alt="image">
         {{-- <span class="d-none d-lg-block">Al - Istiqomah</span> --}}
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -71,7 +71,7 @@
           </a>
         </li><!-- End Search Icon-->
 
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
@@ -144,9 +144,10 @@
 
           </ul><!-- End Notification Dropdown Items -->
 
-        </li><!-- End Notification Nav -->
+        </li> --}}
+        <!-- End Notification Nav -->
 
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-chat-left-text"></i>
@@ -210,7 +211,8 @@
 
           </ul><!-- End Messages Dropdown Items -->
 
-        </li><!-- End Messages Nav -->
+        </li> --}}
+        <!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
 
@@ -276,11 +278,12 @@
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
+ 
+  @yield('main')
 
   {{-- Sidebar --}}
   @include('backend.layout.sidebar')
 
-  @yield('main')
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

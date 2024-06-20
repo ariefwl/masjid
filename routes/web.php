@@ -26,6 +26,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::post('/penerima/importData', [PenerimaController::class, 'importData'])->name('importData');
     Route::resource('penerima', PenerimaController::class);
     Route::resource('shohibul', ShohibulController::class);
+    Route::get('shohibul/cetakUndangan', [ShohibulController::class, 'cetakUndangan'])->name('cetakUndangan');
     Route::resource('hewan', HewanController::class);
 });
 

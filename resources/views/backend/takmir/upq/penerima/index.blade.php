@@ -49,7 +49,7 @@
                                     </div>
                                 @endif
                                 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <form action="{{ route('exportExcel') }}" method="get">
                                         <div class="input-group">
                                             <span class="input-group-text">Filter data</span>
@@ -63,7 +63,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <form action="{{ route('importData') }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <div class="input-group">

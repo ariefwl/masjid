@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
+use function Laravel\Prompts\alert;
+
 class ShohibulController extends Controller
 {
     /**
@@ -22,7 +24,7 @@ class ShohibulController extends Controller
             $kelompok = $request->kelompok;
 
             $query = DB::table('shohibuls as a')
-                ->select('a.nama', 'a.alamat', 'a.telp', 'b.nama_hewan', 'c.nama_jenis')
+                ->select('a.id','a.nama', 'a.alamat', 'a.telp', 'a.type', 'a.permintaan', 'b.nama_hewan', 'c.nama_jenis')
                 ->join('hewans as b', 'a.id_hewan', '=', 'b.id')
                 ->join('jenis as c', 'b.id_jenis', '=', 'c.id');
             if ($jenis != 'all') {
@@ -37,9 +39,10 @@ class ShohibulController extends Controller
             return DataTables::of($data)
                    ->addIndexColumn()
                    ->addColumn('button', function($data){
-                       return '<div class="text-center">
-                                   <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                   <a href="#" onclick="deleteArtikel(this)" data-id="" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
+                       return '<div class="btn-group">
+                                   <button onclick="edit(`'. route('shohibul.update', $data->id) .'`)" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
+
+                                   <button onclick="ceta('.$data->id.')" class="btn btn-success btn-sm"><i class="bi bi-printer"></i></button>
                                </div>';
                    })
                    ->rawColumns(['button'])
@@ -59,7 +62,12 @@ class ShohibulController extends Controller
      */
     public function create()
     {
-        //
+        $shohibul = DB::table('shohibuls as a')
+                    ->select('a.nama','a.alamat','a.permintaan','b.nama_hewan')
+                    ->join('hewans as b', 'a.id_hewan','=', 'b.id')
+                    ->get();
+        // dd($shohibul);
+        return view('backend.takmir.upq.shohibul.tandaterima', compact('shohibul'));
     }
 
     /**
@@ -67,15 +75,35 @@ class ShohibulController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'id_hewan' => $request->id_hewan,
+            'telp' => $request->telepon,
+            'permintaan' => $request->permintaan,
+            'type' => $request->type,
+        ];
+        shohibul::create($data);
+        return response()->json();
     }
+
+    public function cetakUndangan()
+    {
+        dd('Undangan');
+    }
+
+    // public function cetak()
+    // {
+    //     return view('backend.takmir.upq.shohibul.tandaterima');
+    // }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $data = shohibul::find($id);
+        return response()->json($data);
     }
 
     /**
@@ -91,7 +119,37 @@ class ShohibulController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validasi data jika diperlukan
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'alamat' => 'required|string|max:255',
+        'id_hewan' => 'required|integer',
+        'telepon' => 'required|string|max:15',
+        'type' => 'required|string|max:50',
+        'permintaan' => 'required|string|max:255',
+    ]);
+
+    // Temukan data berdasarkan ID
+    $data = Shohibul::find($id);
+    
+    // Periksa apakah data ditemukan
+    if ($data) {
+        // Update data
+        $data->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'id_hewan' => $request->id_hewan,
+            'telepon' => $request->telepon,
+            'type' => $request->type,
+            'permintaan' => $request->permintaan,
+        ]);
+
+        // Kembalikan response JSON dengan status berhasil
+        return response()->json($data, 200);
+    } else {
+        // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
+        return response()->json(['message' => 'Data tidak ditemukan'], 404);
+    }
     }
 
     /**

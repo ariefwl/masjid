@@ -10,6 +10,7 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -17,7 +18,7 @@
         <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>            
             <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Pengurus UPZ':'Pengurus UPQ' }}</span>
+              <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Pengurus UPZ':'Pengurus Takmir' }}</span>
             </a>
           </li>
           <li>
@@ -30,6 +31,15 @@
               <i class="bi bi-circle"></i><span>Kelompok</span>
             </a>
           </li>
+        </ul>
+      </li><!-- End Master Data Nav -->
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Qurban</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>
             <a class="" href="{{ url('hewan'); }}">
               <i class="bi bi-circle"></i><span>Hewan Qurban</span>
@@ -46,8 +56,8 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Master Data Nav -->
-
+      </li>
+      
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#zakat-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-basket"></i><span>Zakat</span><i class="bi bi-chevron-down ms-auto"></i>

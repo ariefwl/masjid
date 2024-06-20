@@ -23,6 +23,7 @@
                   <li class="breadcrumb-item active">Master Data</li>
                 </ol>
             </nav>
+            <div class="message ms-auto"></div>
         </div>
         <section class="section">
             <div class="row">
@@ -32,9 +33,15 @@
                             <h5 class="card-title">Shohibul Qurban</h5>
                             <div class="row mb-2">
                                 <div class="col-lg-6 col-sm-12">
-                                    <button type="button" class="btn btn-circle btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">
+                                    <button onclick="add()" class="btn btn-circle btn-sm btn-primary">
                                         <b> <i class="ri-add-fill"></i> Tambah Data</b>
                                     </button>
+                                    <a href="{{ route('shohibul.create') }}" target="_blank" class="btn btn-circle btn-sm btn-success">
+                                        <b> <i class="bi bi-printer"></i> Cetak TT</b>
+                                    </a>
+                                    <a href="{{ route('cetakUndangan') }}" class="btn btn-circle btn-sm btn-warning">
+                                        <b> <i class="bi bi-file-earmark-excel"></i> Cetak Undangan</b>
+                                    </a>
                                 </div>
                             </div>
                             <div class="row mt-4">
@@ -45,7 +52,7 @@
                                         </a>
                                     </div>
                                 </div> --}}
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text">Filter Jenis Qurban</span>
                                         <select class="form-select" name="jenis" id="jenis">                                    
@@ -56,7 +63,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text">Filter Kelompok Sapi</span>
                                         <select disabled class="form-select" name="kelompok" id="kelompok">                                    
@@ -76,7 +83,8 @@
                                         <th>Nama Shohibul</th>
                                         <th>Alamat</th>
                                         <th>No. Telepon</th>
-                                        {{-- <th>Jenis Qurban</th> --}}
+                                        <th>Tujuan Qurban</th>
+                                        <th>Permintaan</th>
                                         <th>Proses</th>
                                     </tr>
                                 </thead>
@@ -86,57 +94,7 @@
                 </div>
             </div>
         </section>
-
-
-
-        <div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"><b>Tambah Data Shohibul Qurban</b></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST" action="{{ route('shohibul.store') }}">
-                  @csrf
-                    <div class="modal-body">
-                        <div class="row mb-3">
-                          <label for="nama" class="col-4 col-form-label">Shohibul Qurban</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="nama" name="nama" class="form-control">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="alamat" class="col-4 col-form-label">Alamat</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="alamat" name="alamat" class="form-control">
-                          </div>
-                        </div>                  
-                        <div class="row mb-3">
-                          <label for="alamat" class="col-4 col-form-label">Telepon</label>
-                          <div class="col-sm-8">
-                            <input type="text" id="telp" name="telp" class="form-control">
-                          </div>
-                        </div>  
-                        <div class="row mb-3">
-                          <label for="inputText" class="col-sm-4 col-form-label">Hewan Qurban</label>
-                          <div class="col-sm-8">
-                            <select name="id_klp" id="id_klp" class="form-select">
-                                <option value="">-- Hewan Qurban --</option>
-                                @foreach ($hewanQurban as $dt)
-                                    <option value="{{ $dt->id }}">{{ $dt->nama_hewan }}</option>
-                                @endforeach
-                            </select>
-                          </div>
-                        </div>                    
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" id="simpan">Simpan</button>
-                    </div>
-                </form>
-              </div>
-            </div>
-        </div>
+@includeIf('backend.takmir.upq.shohibul.form')
     </main>    
 @endsection
 
@@ -155,6 +113,12 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             table = $('#tbl_shohibul').DataTable({
                 fixHeader: true,
                 responsive: true,
@@ -180,7 +144,8 @@
                     { data : 'nama', name : 'nama'},
                     { data : 'alamat', name : 'alamat'},
                     { data : 'telp', name : 'telp'},
-                    // { data : 'jenis', name : 'jenis'},
+                    { data : 'type', name : 'type'},
+                    { data : 'permintaan', name : 'permintaan'},
                     { data : 'button', name : 'button'}
                 ],
                 lengthChange: false,
@@ -198,13 +163,91 @@
             $('#kelompok').on('change', function(){
                 // alert($('#kelompok').val());
                 table.ajax.reload(); 
-            })
-
-            $('#test').on('click', function(){
-                alert('test');
-            })
+            })     
             
+            $('#frmShohibul').on('submit', function (e) {
+                e.preventDefault();
+
+                var $type = $('#status').val() === 'edit' ? 'put' : 'post';
+                var $msg = $('#status').val() === 'edit' ? 'Data shohibul berhasil di Update !' : 'Data shohibul berhasil ditambahkan !';
+                var $data = {
+                        'nama' : $('#nama').val(),
+                        'alamat' : $('#alamat').val(),
+                        'type' : $('#type').val(), 
+                        'permintaan' : $('#permintaan').val(), 
+                        'telepon' : $('#telp').val(),
+                        'id_hewan' : $('#id_hewan').val()
+                    };
+
+                $.ajax({
+                    url : $('#frmShohibul').attr('action'),
+                    type: $type,
+                    data: $data,                        
+                    dataType: 'json',
+                    success: function(data){
+                        showAlert('success', $msg);
+                        $('#modalShohibul').modal('hide');
+                        table.ajax.reload();
+                    },
+                    error: function(data){
+                        showAlert('danger', 'Data gagal di simpan !');
+                        return;
+                    }
+                })
+            });
         })
 
+        function add(url)
+        {
+            $('#modalShohibul').modal('show');
+            $('#modalShohibul .modal-title').html('<b>Tambah Data Shohibul</b>');
+            $('#frmShohibul')[0].reset();
+            $('#frmShohibul').attr('action', url);
+            $('#btnProses').html('Simpan');
+            $('#frmShohibul [name=_method]').val('post');
+        }
+
+        function edit(url)
+        {
+            $('#modalShohibul').modal('show');
+            $('#modalShohibul .modal-title').html('<b>Edit Data Shohibul</b>');
+
+            $('#frmShohibul')[0].reset();
+            $('#frmShohibul').attr('action', url);
+
+            $.get(url)
+                .done((response) => {
+                    $('#nama').val(response.nama);
+                    $('#alamat').val(response.alamat);
+                    $('#id_hewan').val(response.id_hewan);
+                    $('#type').val(response.type);
+                    $('#telp').val(response.telp);
+                    $('#permintaan').val(response.permintaan);
+                    $('#status').val('edit');
+                    $('#btnProses').html('Update');
+                })
+                .fail((errors) => {
+                    alert('Tidak ada data !');
+                    console.error('Error:', errors);
+                });
+        }
+
+        function cetak(url)
+        {
+            // console.log(url);
+            // let newWindow = window.open('', '_blank');
+            // newWindow.location.href = {{ route('shohibul.create') }};
+        }
+
+        function showAlert(type, message)
+        {
+            var alert = '<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">'
+                        +message+
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $('.message').html(alert);
+            setTimeout(() => {
+                $('.message').alert('close');
+            }, 5000);  
+        }
     </script>
 @endpush
