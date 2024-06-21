@@ -12,10 +12,10 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <ul id="master-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>            
             <a href="components-alerts.html">
               <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Pengurus UPZ':'Pengurus Takmir' }}</span>
@@ -34,47 +34,50 @@
         </ul>
       </li><!-- End Master Data Nav -->
 
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Qurban</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a class="" href="{{ url('hewan'); }}">
-              <i class="bi bi-circle"></i><span>Hewan Qurban</span>
-            </a>
-          </li>
-          <li>
-            <a class="" href="{{ route('shohibul.index'); }}">
-              <i class="bi bi-circle"></i><span>Shohibul Qurban</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route((Auth::user()->unit == '2')?'mustahik':'penerima.index') }}">
-              <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Mustahik':'Penerima Qurban' }}</span>
-            </a>
-          </li>
-        </ul>
-      </li>
+      @if (Auth::user()->unit == '3')
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#qurban-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>Qurban</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="qurban-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+              <a class="" href="{{ url('hewan'); }}">
+                <i class="bi bi-circle"></i><span>Hewan Qurban</span>
+              </a>
+            </li>
+            <li>
+              <a class="" href="{{ route('shohibul.index'); }}">
+                <i class="bi bi-circle"></i><span>Shohibul Qurban</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ route((Auth::user()->unit == '2')?'mustahik':'penerima.index') }}">
+                <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Mustahik':'Penerima Qurban' }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      @else
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#zakat-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-basket"></i><span>Zakat</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="zakat-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a class="" href="{{ url('zakat') }}">
+                <i class="bi bi-circle"></i><span>ZIS</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url('beras') }}">
+                <i class="bi bi-circle"></i><span>Stock Beras</span>
+              </a>
+            </li>
+          </ul>
+        </li><!-- End Zakat Nav -->
+      @endif
+        
       
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#zakat-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-basket"></i><span>Zakat</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="zakat-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a class="" href="{{ url('zakat') }}">
-              <i class="bi bi-circle"></i><span>ZIS</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ url('beras') }}">
-              <i class="bi bi-circle"></i><span>Stock Beras</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Zakat Nav -->
 
 
       <li class="nav-item">

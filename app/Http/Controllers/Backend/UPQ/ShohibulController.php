@@ -120,36 +120,36 @@ class ShohibulController extends Controller
     public function update(Request $request, string $id)
     {
         // Validasi data jika diperlukan
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'alamat' => 'required|string|max:255',
-        'id_hewan' => 'required|integer',
-        'telepon' => 'required|string|max:15',
-        'type' => 'required|string|max:50',
-        'permintaan' => 'required|string|max:255',
-    ]);
-
-    // Temukan data berdasarkan ID
-    $data = Shohibul::find($id);
-    
-    // Periksa apakah data ditemukan
-    if ($data) {
-        // Update data
-        $data->update([
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'id_hewan' => $request->id_hewan,
-            'telepon' => $request->telepon,
-            'type' => $request->type,
-            'permintaan' => $request->permintaan,
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'id_hewan' => 'required|integer',
+            'telepon' => 'required|string|max:15',
+            'type' => 'required|string|max:50',
+            'permintaan' => 'required|string|max:255',
         ]);
 
-        // Kembalikan response JSON dengan status berhasil
-        return response()->json($data, 200);
-    } else {
-        // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
-        return response()->json(['message' => 'Data tidak ditemukan'], 404);
-    }
+        // Temukan data berdasarkan ID
+        $data = Shohibul::find($id);
+        
+        // Periksa apakah data ditemukan
+        if ($data) {
+            // Update data
+            $data->update([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'id_hewan' => $request->id_hewan,
+                'telp' => $request->telepon,
+                'type' => $request->type,
+                'permintaan' => $request->permintaan,
+            ]);
+
+            // Kembalikan response JSON dengan status berhasil
+            return response()->json($data, 200);
+        } else {
+            // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
     }
 
     /**

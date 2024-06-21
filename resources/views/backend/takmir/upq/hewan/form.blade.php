@@ -1,14 +1,13 @@
 
 
-<div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false">
-    <div class="modal-dialog">
+<div class="modal fade" id="modalHewan" tabindex="-1" data-bs-backdrop="false">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"><b>Tambah Hewan Qurban</b></h5>
+          <h5 class="modal-title"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="form" method="POST" action="{{ route('hewan.store') }}" enctype="multipart/form-data">
-          @csrf
+        <form id="formHewan" enctype="multipart/form-data">
             <div class="modal-body">
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-4 col-form-label">Hewan Qurban</label>

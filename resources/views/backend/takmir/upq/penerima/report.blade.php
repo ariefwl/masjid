@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Datar Penerima Qurban</title>
     <style>
-        th {
-            text-align: center;
+        table, thead, tr, th {
             font-weight: bold;
         }
     </style>
@@ -22,7 +21,10 @@
                 <th>DAFTAR PENERIMA DAGING QURBAN</th>
             </tr>
             <tr>
-                <th>Kelompok: {{ $kelompok }}</th>
+                <th>Kelompok : {{ $kelompok }}</th>
+            </tr>
+            <tr>
+                <th>Koordinator : {{ $koordinator }}</th>
             </tr>
             <tr></tr>
             <tr>

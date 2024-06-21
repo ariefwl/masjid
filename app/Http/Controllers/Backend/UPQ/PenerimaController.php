@@ -95,8 +95,12 @@ class PenerimaController extends Controller
 
     public function export_excel(Request $request)
     {
-        $klp = $request->kelompok;
-        return Excel::download(new ExportPenerima($klp), 'penerima.xlsx', null, [\Maatwebsite\Excel\Excel::XLSX]);
+        $idKlp = $request->kelompok;
+        $klp = kelompok::where('id', $idKlp)->get();
+        $klmpk = $klp[0]['kelompok']; 
+        $kor = $klp[0]['koordinator'];
+        // dd($klp[0]['koordinator']);
+        return Excel::download(new ExportPenerima($idKlp, $klmpk, $kor), 'penerima.xlsx', null, [\Maatwebsite\Excel\Excel::XLSX]);
     }
 
     public function importData(Request $request)

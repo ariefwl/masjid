@@ -34,7 +34,7 @@
                             <h5 class="card-title">Daftar Hewan Qurban</h5>
                             <div class="row mb-2">
                                 <div class="col-sm-12 col-md-6">
-                                    <button type="button" class="btn btn-circle btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">
+                                    <button onclick="add()" class="btn btn-circle btn-sm btn-primary">
                                         <b><i class="ri-add-fill"></i> Tambah Data</b>
                                     </button>
                                 </div>
@@ -48,6 +48,7 @@
                                         <th>Jenis</th>
                                         <th>Umur</th>
                                         <th>Bobot</th>
+                                        <th>Status</th>
                                         <th>Proses</th>
                                     </tr>
                                 </thead>
@@ -57,7 +58,7 @@
                 </div>
             </div>
         </div>
-@includeIf('backend.hewan.form')
+@includeIf('backend.takmir.upq.hewan.form')
     </main>
 @endsection
 
@@ -97,6 +98,24 @@
                 { data: 'jenis'},
                 { data: 'umur'},
                 { data: 'bobot'},
+                { 
+                    data : null,
+                    render : function(data, type, row){
+                        if (row.status == 0) {
+                            return "<h4><span class='badge bg-success'>siap</span></h4>";
+                        } else if (row.status == 1) {
+                            return "<h4><span class='badge bg-danger'>sembelih</span></h4>"
+                        } else if (row.status == 2) {
+                            return "<h4><span class='badge bg-secondary'>pengulitan</span></h4>"
+                        } else if (row.status == 3) {
+                            return "<h4><span class='badge bg-warning'>pencacahan</span></h4>"
+                        } else if (row.status == 4) {
+                            return "<h4><span class='badge bg-primary'>pembungkusan</span></h4>"
+                        } else if (row.status == 5) {
+                            return "<h4><span class='badge bg-info'>distribusi</span></h4>"
+                        }
+                    } 
+                },
                 { data: 'button'}
             ],
             lengthChange: false
@@ -123,13 +142,19 @@
         })
     })
 
-    document.getElementById('gbr').onchange = function (evt) {
-        var [file] = evt.target.files;
-        if (file) {
-            var preview = document.getElementById('prev');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-        }
-    };
+    function add()
+    {
+        $('#modalHewan').modal('show');
+        $('#modalHewan .modal-title').html('<b>Tambah Hewan Qurban</b>');
+    }
+
+    // document.getElementById('gbr').onchange = function (evt) {
+    //     var [file] = evt.target.files;
+    //     if (file) {
+    //         var preview = document.getElementById('prev');
+    //         preview.src = URL.createObjectURL(file);
+    //         preview.style.display = 'block';
+    //     }
+    // };
 </script>
 @endpush

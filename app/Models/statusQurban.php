@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class hewan extends Model
+class statusQurban extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['id_jenis','nama_hewan','umur','jenis','bobot','status','foto','qr_code'];
+    protected $fillable = ['status','keterangan'];
 }
