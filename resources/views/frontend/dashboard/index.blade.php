@@ -709,7 +709,7 @@
                 Rincian Penyaluran Daging Qurban
               </h5>
               <div class="activity">
-                <table class="table table-striped">
+                {{-- <table class="table table-striped">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -735,7 +735,45 @@
                       </tr>
                       @endforeach
                   </tbody>
-                </table>
+                </table> --}}
+                @foreach ($groupByJenis as $jenis => $items)
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Penerima</th>
+                        {{-- <th>Jenis Daging</th> --}}
+                        <th>Jumlah</th>
+                        <th>Berat / Kg.</th>
+                        <th>Total / Kg.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @php
+                          $subtotal = 0;
+                          $no = 1;
+                      @endphp
+                      @foreach ($items as $item)
+                          @php
+                              $total = $item->jumlah * $item->berat;
+                              $subtotal += $total
+                          @endphp
+                          <tr>
+                            <td>{{ $no++ }}</td>
+                            <td>{{ $item->penerima }}</td>
+                            {{-- <td>{{ $item->nama_jenis }}</td> --}}
+                            <td>{{ $item->jumlah }}</td>
+                            <td>{{ $item->berat }}</td>
+                            <td>{{ $total }}</td>
+                          </tr>
+                      @endforeach
+                      <tr>
+                        <td colspan="4"><strong>Subtotal {{ $jenis }}</strong></td>
+                        <td><strong>{{ $subtotal }}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                @endforeach
               </div>
             </div>
           </div>

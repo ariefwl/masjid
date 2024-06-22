@@ -7,6 +7,7 @@ use App\Models\hewan;
 use App\Models\jenis;
 use App\Models\kelompok;
 use App\Models\penerima;
+use App\Models\salurDaging;
 use App\Models\shohibul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,12 +27,15 @@ class DashboardController extends Controller
                         ->first();
             $type[] = $query;
         };
+
+        $distribusi = salurDaging::with('jenis')->get();
         // $qkel = DB::table('kelompoks')->select('kelompok')->get();
         $data = [
             'shohibul' => shohibul::orderBy('id', 'desc')->limit(5)->get(),
             'penerima' => penerima::count(),
             'kelompok' => kelompok::count(),
             'klpk'     => kelompok::select('kelompok')->get(),
+            'groupByJenis' => $distribusi->groupBy('jenis.nama_jenis'),
             // 'totalsapi' => DB::table('shohibuls as a')
             // ->select('a.id_hewan')
             // ->join('hewans as b', 'a.id_hewan','=','b.id')
@@ -46,13 +50,13 @@ class DashboardController extends Controller
             ->count('id_jenis'),
             'totalkambing' => DB::table('hewans')
             ->where('id_jenis', 2)
-            ->count('id_jenis'),
-            'distribusi' => DB::table('salur_dagings as a')
-                         ->select('a.penerima', 'b.nama_jenis','a.jumlah', 'a.berat', DB::raw('a.jumlah * a.berat as Total'))
-                         ->join('jenis as b', 'a.id_jenis_daging','=','b.id')
-                         ->get()
+            ->count('id_jenis'), 
+            // 'distribusi' => DB::table('salur_dagings as a')
+            //              ->select('a.penerima', 'b.nama_jenis','a.jumlah', 'a.berat', DB::raw('a.jumlah * a.berat as Total'))
+            //              ->join('jenis as b', 'a.id_jenis_daging','=','b.id')
+            //              ->get()
         ];
-        // dd($data['distribusi']);
+        // dd($data['groupByJenis']);
         // $data['klpk'] = $qkel;
         $data['type'] = $type;
         // dd($data['klpk']);
