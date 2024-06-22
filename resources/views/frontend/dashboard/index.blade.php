@@ -667,7 +667,8 @@
 
         </div><!-- End Right side columns -->
 
-        <div class="col lg-12">
+        {{-- Penerima Qurban per Kelompok --}}
+        <div class="col-lg-12">
           {{-- Chart Penerima --}}
           <div class="col-lg-12">
             <div class="card">
@@ -700,6 +701,45 @@
           </div>
         </div>
 
+        {{-- Rincian Penyaluran Daging Qurban --}}
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Rincian Penyaluran Daging Qurban
+              </h5>
+              <div class="activity">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Penerima</th>
+                      <th>Jenis Daging</th>
+                      <th>Jumlah</th>
+                      <th>Berat / Kg.</th>
+                      <th>Total / Kg.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @php
+                        $no = 1;
+                    @endphp
+                    @foreach ($distribusi as $item)
+                    <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $item->penerima }}</td>                          
+                        <td>{{ $item->nama_jenis }}</td>                          
+                        <td>{{ $item->jumlah }}</td>                          
+                        <td>{{ $item->berat }}</td>                          
+                        <td>{{ $item->Total }}</td>                          
+                      </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -46,9 +46,13 @@ class DashboardController extends Controller
             ->count('id_jenis'),
             'totalkambing' => DB::table('hewans')
             ->where('id_jenis', 2)
-            ->count('id_jenis')
+            ->count('id_jenis'),
+            'distribusi' => DB::table('salur_dagings as a')
+                         ->select('a.penerima', 'b.nama_jenis','a.jumlah', 'a.berat', DB::raw('a.jumlah * a.berat as Total'))
+                         ->join('jenis as b', 'a.id_jenis_daging','=','b.id')
+                         ->get()
         ];
-        // dd($data['totalsapi']);
+        // dd($data['distribusi']);
         // $data['klpk'] = $qkel;
         $data['type'] = $type;
         // dd($data['klpk']);
