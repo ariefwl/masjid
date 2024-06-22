@@ -744,7 +744,7 @@
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14', 'Khotib', 'Pengurus', 'Ponpes', 'Panitia Tambahan','Parkir Untung','Parkir Papang','Pasar Rasamala','Parkir Sarinah','Tugu Beton','Ojek Pasar','Ojek Online','Relawan','Pasar Pisang'],
+        categories: ['Kel 1', 'Kel 2', 'Kel 3', 'Kel 4', 'Kel 5', 'Kel 6', 'Kel 7', 'Kel 8', 'Kel 9', 'Kel 10', 'Kel 11', 'Kel 12', 'Kel 13', 'Kel 14', 'Khotib', 'Pengurus', 'Ponpes', 'Panitia Tambahan','Parkir Untung','Parkir Papang','Pasar Rasamala','Parkir Sarinah','Tugu Beton','Ojek Pasar','Ojek Online','Relawan','Pasar Pisang','Lingkungan','Panitia Inti','Jagal'],
         // categories: [ {{ $klp }} ],
       },
       yaxis: {
