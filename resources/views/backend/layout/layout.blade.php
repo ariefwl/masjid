@@ -278,11 +278,11 @@
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
+  {{-- Sidebar --}}
+  @include('backend.layout.sidebar')
  
   @yield('main')
 
-  {{-- Sidebar --}}
-  @include('backend.layout.sidebar')
 
 
   <!-- ======= Footer ======= -->

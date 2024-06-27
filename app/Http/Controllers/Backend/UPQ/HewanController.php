@@ -21,14 +21,14 @@ class HewanController extends Controller
             $jenis = $request->jenis;
             $data = hewan::get();
             return DataTables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('button',function($data){
-                        return '<div class="text-center">
-                                <button onclick="edit(`'. route('kelompok.update', $data->id) .'`)" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></button>
+                ->addIndexColumn()
+                ->addColumn('button', function ($data) {
+                    return '<div class="text-center">
+                                <button onclick="edit(`' . route('kelompok.update', $data->id) . '`)" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></button>
                                 </div>';
-                    })
-                    ->rawColumns(['button'])
-                    ->make();
+                })
+                ->rawColumns(['button'])
+                ->make();
         }
         $kategori = jenis::get();
         return view('backend.takmir.upq.hewan.index', compact('kategori'));
@@ -47,15 +47,19 @@ class HewanController extends Controller
      */
     public function store(Request $request)
     {
-        $validasi = Validator::make($request->all(),[
-            'gbr' => 'image|mimes:jpeg,png,jpg,bmp|max:2048'
-        ]);
+        $validasi = Validator::make(
+            $request->all(),
+            [
+                'gbr' => 'image|mimes:jpeg,png,jpg,bmp|max:2048'
+            ]
+        );
 
         if ($request->hasFile('gbr')) {
             $gbr = $request->file('gbr');
             $gbrname = date('YmdHis') . '.' . $gbr->getClientOriginalExtension();
             $gbr->move(public_path('Image/qurban/1445H'), $gbrname);
-            $data = new hewan(); 
+
+            $data = new hewan();
             $data->id_jenis = $request->input('kategori');
             $data->nama_hewan = $request->input('nama');
             $data->umur = $request->input('umur');
@@ -63,7 +67,7 @@ class HewanController extends Controller
             $data->foto = $gbrname;
             // dd($data);
             $data->save();
-    
+
             return response()->json(['success' => 'Data berhasil disimpan.']);
         }
         return response()->json(['success' => 'Data tidak bisa di simpan !.']);

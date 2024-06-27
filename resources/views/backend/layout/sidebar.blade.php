@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
+        <a class="nav-link {{ Route::is('dashboard') ? '' : 'collapsed' }}" href="{{ route('dashboard') }}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -12,7 +12,7 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ Route::is('kelompok.*') ? '' : 'collapsed' }}"" data-bs-target="#master-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="master-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -27,7 +27,7 @@
             </a>
           </li>
           <li>
-            <a class="" href="{{ route('kelompok.index'); }}">
+            <a class="{{ Route::is('kelompok.*') ? 'active' : '' }}" href="{{ route('kelompok.index'); }}">
               <i class="bi bi-circle"></i><span>Kelompok</span>
             </a>
           </li>
@@ -41,17 +41,17 @@
           </a>
           <ul id="qurban-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
-              <a class="" href="{{ url('hewan'); }}">
+              <a class="{{ Route::is('hewan.*') ? 'active' : '' }}" href="{{ url('hewan'); }}">
                 <i class="bi bi-circle"></i><span>Hewan Qurban</span>
               </a>
             </li>
             <li>
-              <a class="" href="{{ route('shohibul.index'); }}">
+              <a class="{{ Route::is('shohibul.*') ? 'active' : '' }}" href="{{ route('shohibul.index'); }}">
                 <i class="bi bi-circle"></i><span>Shohibul Qurban</span>
               </a>
             </li>
             <li>
-              <a href="{{ route((Auth::user()->unit == '2')?'mustahik':'penerima.index') }}">
+              <a class="{{ Route::is('penerima.*') ? 'active' : '' }}" href="{{ route((Auth::user()->unit == '2')?'mustahik':'penerima.index') }}">
                 <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Mustahik':'Penerima Qurban' }}</span>
               </a>
             </li>
@@ -117,7 +117,7 @@
         </a>
         <ul id="setting-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="#">
+            <a class="{{ Route::is('profiles.*') ? 'active' : '' }}" href="{{ route('profiles.create') }}">
               <i class="bi bi-circle"></i><span>Profile</span>
             </a>
           </li>

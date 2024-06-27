@@ -36,30 +36,14 @@ class DashboardController extends Controller
             'kelompok' => kelompok::count(),
             'klpk'     => kelompok::select('kelompok')->get(),
             'groupByJenis' => $distribusi->groupBy('jenis.nama_jenis'),
-            // 'totalsapi' => DB::table('shohibuls as a')
-            // ->select('a.id_hewan')
-            // ->join('hewans as b', 'a.id_hewan','=','b.id')
-            // ->join('jenis as c','c.id','=','b.id_jenis')
-            // ->where('c.id','=', 1)
-            // ->groupBy('a.id_hewan')
-            // ->orderBy('a.id_hewan', 'DESC')
-            // ->limit(1)
-            // ->get(),
             'totalsapi' => DB::table('hewans')
             ->where('id_jenis', 1)
             ->count('id_jenis'),
             'totalkambing' => DB::table('hewans')
             ->where('id_jenis', 2)
             ->count('id_jenis'), 
-            // 'distribusi' => DB::table('salur_dagings as a')
-            //              ->select('a.penerima', 'b.nama_jenis','a.jumlah', 'a.berat', DB::raw('a.jumlah * a.berat as Total'))
-            //              ->join('jenis as b', 'a.id_jenis_daging','=','b.id')
-            //              ->get()
         ];
-        // dd($data['groupByJenis']);
-        // $data['klpk'] = $qkel;
         $data['type'] = $type;
-        // dd($data['klpk']);
         return view('frontend.dashboard.index', $data);
     }
 

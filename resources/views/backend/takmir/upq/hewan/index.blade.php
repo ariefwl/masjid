@@ -16,7 +16,7 @@
 @section('judul', 'Hewan Qurban | Al - Istiqomah');
 
 @section('main')
-    <main id="main" >
+    <main id="main" class="main">
         <div class="pagetitle">
             <h1>Hewan Qurban</h1>
             <nav>
@@ -148,13 +148,13 @@
         $('#modalHewan .modal-title').html('<b>Tambah Hewan Qurban</b>');
     }
 
-    // document.getElementById('gbr').onchange = function (evt) {
-    //     var [file] = evt.target.files;
-    //     if (file) {
-    //         var preview = document.getElementById('prev');
-    //         preview.src = URL.createObjectURL(file);
-    //         preview.style.display = 'block';
-    //     }
-    // };
+    document.getElementById('gbr').onchange = function (evt) {
+        var [file] = evt.target.files;
+        if (file) {
+            var preview = document.getElementById('prev');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    };
 </script>
 @endpush

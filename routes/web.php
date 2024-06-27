@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\KelompokController;
+use App\Http\Controllers\Backend\ProfileController as BackendProfileController;
 use App\Http\Controllers\Backend\UPQ\HewanController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
 use App\Http\Controllers\Backend\UPQ\ShohibulController;
@@ -37,6 +38,7 @@ Route::middleware('auth', 'AdminUPZ')->group(function(){
 Route::middleware('auth')->group(function () {
     // Route::get('/kelompok', [KelompokController::class, 'index'])->name('kelompok');
     Route::resource('kelompok', KelompokController::class);
+    Route::resource('profiles', BackendProfileController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
