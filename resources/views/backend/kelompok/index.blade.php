@@ -18,9 +18,10 @@
                 <li class="breadcrumb-item active">Master Data</li>
               </ol>
             </nav>
-            <button onclick="add()" class="btn btn-circle btn-sm btn-primary">
+            <button onclick="add()" class="btn btn-circle btn-sm btn-primary mb-2">
                 <b>Tambah Data</b>
             </button>
+            <div class="message ms-auto"></div>
             {{-- <a href="{{ url('kelompok/create') }}" class="btn btn-circle btn-primary btn-sm" style="font-weight: 600;"><b>Tambah Data</b></a> --}}
         </div>
 
@@ -92,18 +93,13 @@
             })
 
             $('#frmKlp').on('submit', function (e) {
-                if($('#status').val() == 'edit'){
-                    $type = 'put';
-                }else{
-                    $type = 'post';
-                }
+                let $type = $('#status').val() === 'edit' ? 'put' : 'post';
+                let $msg = $('#status').val() === 'edit' ? 'Data kelompok berhasil di Update !' : 'Data kelompok berhasil ditambahkan !';
                 if (! e.preventDefault()){
                     $.ajax({
                         url : $('#frmKlp').attr('action'),
-                        // url: "{{ route('kelompok.store') }}",
                         type: $type,
                         data: {
-                            // "_token": $('#token').val(),
                           'kelompok' : $('#kelompok').val(),
                           'koordinator' : $('#koordinator').val(),
                           'telepon' : $('#telp').val(),
@@ -111,6 +107,7 @@
                         },                        
                         dataType: 'json',
                         success: function(data){
+                            showAlert('success', $msg);
                             $('#modalKlp').modal('hide');
                             table.ajax.reload();
                         },
@@ -156,6 +153,17 @@
                 .fail((errors) => {
                     alert('Tidak ada data !');
                 })
+        }
+
+        function showAlert(type, message)
+        {
+            var alert = '<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">'
+                        +message+
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $('.message').html(alert);
+            setTimeout(() => {
+                $('.message').alert('close');
+            }, 5000);  
         }
 
     </script>

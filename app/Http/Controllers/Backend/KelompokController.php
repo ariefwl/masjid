@@ -50,10 +50,8 @@ class KelompokController extends Controller
             'telp' => $request->telepon,
             'alamat' => $request->alamat
         ];
-        // dd($data);
         Kelompok::create($data);
-        return response()->json(['success' => 'Data kelompok berhasil di tambahkan !']);
-        // return redirect(url('kelompok'));
+        return response()->json();
     }
 
     /**
@@ -62,7 +60,6 @@ class KelompokController extends Controller
     public function show(string $id)
     {
         $data = kelompok::find($id);
-        // dd($data);
         return response()->json($data);
     }
 
@@ -87,7 +84,7 @@ class KelompokController extends Controller
             'telp' => $request->telepon
         ]);
 
-        return response()->json(['success' => 'Data kelompok berhasil di tambahkan !']);
+        return response()->json();
     }
 
     /**

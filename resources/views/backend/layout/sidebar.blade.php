@@ -55,6 +55,11 @@
                 <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Mustahik':'Penerima Qurban' }}</span>
               </a>
             </li>
+            <li>
+              <a class="{{ Route::is('kasQurban.*') ? 'active' : '' }}" href="{{ route((Auth::user()->unit == '2')?'kasZakat.index':'kasQurban.index') }}">
+                <i class="bi bi-circle"></i><span>{{ (Auth::user()->unit == '2')?'Kas Zakat':'Kas Qurban' }}</span>
+              </a>
+            </li>
           </ul>
         </li>
       @else

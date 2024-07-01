@@ -14,8 +14,9 @@
             </ol>
         </nav>
 
-        {!! QrCode::size(400)->generate('Sistem Informasi Manajemen Yaisba'); !!}
+        {{-- {!! QrCode::size(400)->generate('Sistem Informasi Manajemen Yaisba'); !!} --}}
     </div><!-- End Page Title -->
 </main>
+@endsection
 
     

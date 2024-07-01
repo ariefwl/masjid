@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\KelompokController;
 use App\Http\Controllers\Backend\ProfileController as BackendProfileController;
 use App\Http\Controllers\Backend\UPQ\HewanController;
+use App\Http\Controllers\Backend\UPQ\kasQurbanController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
 use App\Http\Controllers\Backend\UPQ\ShohibulController;
 use App\Http\Controllers\Frontend\DashboardController;
@@ -29,6 +30,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::resource('shohibul', ShohibulController::class);
     Route::get('shohibul/cetakUndangan', [ShohibulController::class, 'cetakUndangan'])->name('cetakUndangan');
     Route::resource('hewan', HewanController::class);
+    Route::resource('kasQurban', kasQurbanController::class);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){
