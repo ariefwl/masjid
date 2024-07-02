@@ -136,7 +136,6 @@
             // alert(url);
             $('#modalKlp').modal('show');
             $('#modalKlp .modal-title').html('<b>Edit Data Kelompok</b>');
-
             $('#frmKlp')[0].reset();
             $('#frmKlp').attr('action', url);
             // $('#frmKlp [name=_method]').val('PUT');

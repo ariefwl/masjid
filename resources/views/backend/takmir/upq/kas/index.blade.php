@@ -31,7 +31,7 @@
                         <button onclick="add()" class="btn btn-circle btn-sm btn-primary mt-0">
                             <b><i class="ri-add-fill"></i> Tambah Data</b>
                         </button>
-                        <h3 class="card-title">Saldo Akhir Kas : Rp. 5.000.000</h3>
+                        <h3 class="card-title" id="saldoakhir" name="saldoakhir"></h3>
                     </div>
                     <div class="card-body">
                         <table id="tblKas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -78,6 +78,10 @@
             }
         });
 
+        setInterval(() => {
+            tampilkanSaldo();
+        }, 5000);
+
         $('.currency').inputmask({
             'alias': 'numeric',
             'prefix' : 'Rp. ',
@@ -103,6 +107,9 @@
             ajax: {
                 url : '{{ url()->current() }}'
             },
+            columnDefs: [
+                { className: 'dt-right', targets: [4,5] }
+            ],
             columns: [
                 { data : 'DT_RowIndex'},
                 { data : 'tanggal'},
@@ -117,52 +124,68 @@
         })
 
         $('#formKas').on('submit', function(e){
-            e.preventDefault();
-            
-            var $type = $('#status').val() === 'edit' ? 'put' : 'post';
-            var $msg = $('#status').val() === 'edit' ? 'Data Kas berhasil di Update !' : 'Data kas berhasil ditambahkan !';
-            var $data = {
-                            'tanggal' : $('#tanggal').val(),
-                            'kategori' : $('#kategori').val(),
-                            'keterangan' : $('#keterangan').val(), 
-                            'jenis' : $("input[type='radio'][name='jenis']:checked").val(), 
-                            'jumlah' : $('#jumlah').val(),
-                        };
-            
-                        $.ajax({
-                            url : $('#frmKas').attr('action'),
-                            type: $type,
-                            data: $data,                        
-                            dataType: 'json',
-                            success: function(data){
-                                if (data.msg == 'tglOffSide') {
-                                    showAlert('danger', 'Tanggal transaksi Off Side !');
-                                    $('#modalKas').modal('hide');
-                                    tabel.ajax.reload();
-                                } else {
-                                    if (data.msg == 'gagal') {
-                                        showAlert('danger', 'Saldo kas tidak cukup !');
-                                        $('#modalKas').modal('hide');
-                                        tabel.ajax.reload();
-                                    } else {
-                                        showAlert('success', $msg);
-                                        $('#modalKas').modal('hide');
-                                        tabel.ajax.reload();
-                                    }
-                                }
-                            },
-                            error: function(data){
-                                showAlert('danger', 'Data gagal di simpan !');
+
+            let url = $(this).attr('action');
+            let method = $(this).find('[name=_method]').val();
+            // let $type = $('#status').val() === 'edit' ? 'put' : 'post';
+            let $msg = $('#status').val() === 'edit' ? 'Data Kas berhasil di Update !' : 'Data kas berhasil ditambahkan !';
+            let $data = {
+                    'tanggal' : $('#tanggal').val(),
+                    'kategori' : $('#kategori').val(),
+                    'keterangan' : $('#keterangan').val(), 
+                    'jenis' : $("input[type='radio'][name='jenis']:checked").val(), 
+                    'jumlah' : $('#jumlah').val(),
+                };
+            if (! e.preventDefault()) {
+                $.ajax({
+                    url : url,
+                    // type: $type,
+                    method: method,
+                    data: $data,                        
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.msg == 'tglOffSide') {
+                            showAlert('danger', 'Tanggal transaksi Off Side !');
+                            $('#modalKas').modal('hide');
+                            tabel.ajax.reload();
+                        } else {
+                            if (data.msg == 'gagal') {
+                                showAlert('danger', 'Saldo kas tidak cukup !');
                                 $('#modalKas').modal('hide');
                                 tabel.ajax.reload();
+                            } else {
+                                showAlert('success', $msg);
+                                $('#modalKas').modal('hide');
+                                tampilkanSaldo();
+                                tabel.ajax.reload();
                             }
-                        })
+                        }
+                    },
+                    error: function(data){
+                        showAlert('danger', 'Data gagal di simpan !');
+                        $('#modalKas').modal('hide');
+                        tabel.ajax.reload();
+                    }
+                })
+            }
         })
 
         $("#tanggal").flatpickr({
             dateFormat: "d-m-Y",
         });
     }); 
+
+    function tampilkanSaldo()
+    {
+        $.ajax({
+          url : "saldoKas",
+          type : "GET",
+          dataType : "JSON",          
+          success : function(response){
+            document.getElementById("saldoakhir").innerText = response.saldo_akhir;
+          }
+        })
+    }
 
     function add(url)
     {
@@ -182,9 +205,9 @@
         $('#modalKas .modal-title').html('<b>Edit Data Kas</b>');
         $('#formKas')[0].reset();
         $('#formKas').attr('action', url);
+        $('#formKas [name=_method]').val('PUT');
         $.get(url)
             .done((response) => {
-                console.log(Date('d-m-Y', response.tanggal));
                 $('#tanggal').val(response.tanggal);
                 $('#kategori').val(response.kategori);
                 $('#keterangan').val(response.keterangan);
@@ -203,9 +226,9 @@
         var alert = '<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">'
                     +message+
                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        $('.message').html(alert);
+        $('.message').append(alert);
         setTimeout(() => {
-            $('.message').alert('close');
+            $('.message .alert').alert('close');
         }, 5000);  
     }
 

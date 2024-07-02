@@ -9,7 +9,7 @@ class kas extends Model
 {
     use HasFactory;
     protected $table = "kas_qurban";
-    protected $fillable = ['tanggal','kategori','keterangan','jenis','jumlah','saldo_akhir','created_by'];
+    protected $fillable = ['tanggal','kategori','keterangan','jenis','jumlah','created_by'];
 
     protected $casts = [
         'tanggal' => 'datetime:d-m-Y',
@@ -22,7 +22,10 @@ class kas extends Model
 
     public function scopeSaldoAkhir($query)
     {
-        // return $query->orderBy('created_at', 'desc')->value('saldo_akhir') ?? 0;
-        return 0;   
+         // Ambil nilai saldo_akhir terbaru dari tabel saldoAkhirKasQurban
+        $saldoKas = saldoAkhirKasQurban::orderBy('created_at', 'desc')->value('saldo_akhir');
+
+        // Kembalikan nilai saldo_akhir atau 0 jika tidak ditemukan
+        return $saldoKas ?? 0;
     }
 }

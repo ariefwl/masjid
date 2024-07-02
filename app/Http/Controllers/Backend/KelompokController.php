@@ -76,6 +76,7 @@ class KelompokController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd('Update');
         $data = kelompok::find($id);
         $data->update([
             'kelompok' => $request->kelompok,

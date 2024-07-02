@@ -6,6 +6,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="formKas">
+          @csrf
+          @method('PUT')
             <div class="modal-body">
                 <h5>Saldo Kas : {{ formatRupiah($saldoAkhir) }}</h5>
                 <input type="hidden" name="status" id="status">

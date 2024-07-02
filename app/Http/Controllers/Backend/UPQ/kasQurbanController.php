@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\UPQ;
 
 use App\Http\Controllers\Controller;
 use App\Models\kas;
+use App\Models\saldoAkhirKasQurban;
 use Carbon\Carbon;
 use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
@@ -76,24 +77,32 @@ class kasQurbanController extends Controller
         if ($thnBulanTrans != $thnBulanSekarang) {
             return response()->json(['msg' => 'tglOffSide']);
         } else {
-            // $saldoAkhir = kas::SaldoAkhir();
+            $saldoAkhir = kas::SaldoAkhir();
             
             // saldo akhir ditambah transaksi masuk/keluar
-            // if ($data['jenis'] == 'masuk') {
-            //     $saldoAkhir += $data['jumlah'];
-            // } else {
-            //     $saldoAkhir -= $data['jumlah'];
-            // }
+            if ($data['jenis'] == 'masuk') {
+                $saldoAkhir += $data['jumlah'];
+            } else {
+                $saldoAkhir -= $data['jumlah'];
+            }
 
-            // if ($saldoAkhir <= -1) {
-            //     return response()->json(['msg' => 'gagal']);
-            // }
+            if ($saldoAkhir <= -1) {
+                return response()->json(['msg' => 'gagal']);
+            }
+            $saldoKas = saldoAkhirKasQurban::first();
+            if ($saldoKas) {
+                // dd('Kas ada');
+                // Jika saldo kas ada, perbarui saldo_akhir
+                $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
+            } else {
+                // dd('Kas Null');
+                $data = [
+                    'saldo_akhir' => $saldoAkhir,
+                    'created_by' => Auth()->user()->id
+                ];
+                saldoAkhirKasQurban::create($data);
+            }
 
-            // $kas = new kas();
-            // $kas->fill($data);
-            // $kas->saldo_akhir = $saldoAkhir;
-            // dd($kas);
-            // $kas->save();
             $data = [
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
                 'kategori' => $request->kategori,
@@ -103,6 +112,7 @@ class kasQurbanController extends Controller
                 'created_by' => Auth()->user()->id
             ];
             kas::create($data);
+
             return response()->json();
         }
     }
@@ -132,17 +142,29 @@ class kasQurbanController extends Controller
     {
         $data = kas::find($id);
         // Periksa apakah data ditemukan
-        if ($data) {
-            // Update data
-            $data->update([
-                'keterangan' => $request->keterangan,
-            ]);
 
-            // Kembalikan response JSON dengan status berhasil
-            return response()->json($data, 200);
+        $tglTrans = Carbon::createFromFormat('d-m-Y', $request->tanggal);
+        $thnBulanTrans = $tglTrans->format('Ym');
+        $thnBulanSekarang = Carbon::now()->format('Ym');
+        if ($thnBulanTrans != $thnBulanSekarang) {
+            return response()->json(['msg' => 'tglOffSide']);
         } else {
-            // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if ($data) {
+                // Update data
+                $data->update([
+                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
+                    'kategori' => $request->kategori,
+                    'keterangan' => $request->keterangan,
+                    'jumlah' => $request->jumlah,
+                    'jenis' => $request->jenis,
+                ]);
+    
+                // Kembalikan response JSON dengan status berhasil
+                return response()->json($data, 200);
+            } else {
+                // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
         }
     }
 
@@ -152,5 +174,12 @@ class kasQurbanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getSaldoAkhir()
+    {
+        $data = saldoAkhirKasQurban::latest()->value('saldo_akhir');
+        // dd($data);
+        return response()->json(['saldo_akhir'=>$data]);
     }
 }

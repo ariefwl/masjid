@@ -31,6 +31,8 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::get('shohibul/cetakUndangan', [ShohibulController::class, 'cetakUndangan'])->name('cetakUndangan');
     Route::resource('hewan', HewanController::class);
     Route::resource('kasQurban', kasQurbanController::class);
+
+    Route::get('saldoKas', [kasQurbanController::class, 'getSaldoAkhir']);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){

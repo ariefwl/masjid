@@ -6,11 +6,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="frmKlp">
-          {{-- @csrf --}}
-          {{-- @method('post') --}}
             <div class="modal-body">
-              {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-              <input type="hidden" name="idKlp" id="idKlp">
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-4 col-form-label">Kelompok</label>
                 <div class="col-sm-8">
