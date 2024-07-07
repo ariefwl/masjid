@@ -9,9 +9,11 @@
         "asdh/laravel-flatpickr": "^2.2",
         "doctrine/dbal": "^4.0",
         "laravel/framework": "^11.9",
+        "laravel/reverb": "@beta",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpword": "^1.2",
+        "pusher/pusher-php-server": "^7.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
@@ -68,7 +70,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "composer/installers": false
         }
     },
     "minimum-stability": "stable",

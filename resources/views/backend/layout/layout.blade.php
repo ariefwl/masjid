@@ -30,8 +30,8 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('Backend/css/style.css') }}" rel="stylesheet">
-
     @stack('css')
+
     <!-- =======================================================
     * Template Name: NiceAdmin
     * Updated: Jan 29 2024 with Bootstrap v5.3.2

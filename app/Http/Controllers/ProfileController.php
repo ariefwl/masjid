@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
+use App\Events\SaldoAkhirKas;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,5 +58,17 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function message()
+    {
+        return view('messages');
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $msg = $request->input('message');
+        event(new MessageSent($msg));
+        return response()->json(['status' => 'Message sent!']);
     }
 }

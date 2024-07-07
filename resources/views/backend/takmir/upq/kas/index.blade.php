@@ -1,10 +1,13 @@
 @extends('backend.layout.layout');
 
+
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    {{-- @vite(['resources/js/app.js', 'resources/css/app.css']) --}}
+    @vite(['resources/js/app.js'])
 @endpush
 
 @section('judul', 'Kas Qurban | Al - Istiqomah');
@@ -70,6 +73,9 @@
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+{{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script> --}}
+
 <script type="text/javascript">
     $(document).ready(function(){
         $.ajaxSetup({
@@ -78,9 +84,9 @@
             }
         });
 
-        setInterval(() => {
-            tampilkanSaldo();
-        }, 5000);
+        // setInterval(() => {
+        //     tampilkanSaldo();
+        // }, 5000);
 
         $('.currency').inputmask({
             'alias': 'numeric',
@@ -156,7 +162,7 @@
                             } else {
                                 showAlert('success', $msg);
                                 $('#modalKas').modal('hide');
-                                tampilkanSaldo();
+                                // tampilkanSaldo();
                                 tabel.ajax.reload();
                             }
                         }
@@ -189,7 +195,6 @@
 
     function add(url)
     {
-        // alert(url);
         $('#modalKas').modal('show');
         $('#modalKas .modal-title').html('<b>Tambah Data Kas</b>');
         $('#formKas')[0].reset();
@@ -200,7 +205,6 @@
 
     function edit(url)
     {
-        // alert(url);
         $('#modalKas').modal('show');
         $('#modalKas .modal-title').html('<b>Edit Data Kas</b>');
         $('#formKas')[0].reset();
@@ -211,6 +215,7 @@
                 $('#tanggal').val(response.tanggal);
                 $('#kategori').val(response.kategori);
                 $('#keterangan').val(response.keterangan);
+                $('input[name="jenis"][value="' + response.jenis + '"]').prop('checked', true);
                 $('#jumlah').val(response.jumlah);
                 $('#status').val('edit');
                 $('#btnProses').html('Update');
@@ -238,6 +243,13 @@
         if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
         return true;
+    }
+
+    window.onload = function() {
+        var channel = Echo.channel('channel-sakhir');
+        channel.listen("SaldoAkhirKas", function(data) {
+            document.getElementById("saldoakhir").innerText = data.saldoAkhir;
+        })
     }
 </script>
 @endpush

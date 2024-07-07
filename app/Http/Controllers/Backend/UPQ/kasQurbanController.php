@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Events\SaldoAkhirKas;
 
 class kasQurbanController extends Controller
 {
@@ -91,18 +92,16 @@ class kasQurbanController extends Controller
             }
             $saldoKas = saldoAkhirKasQurban::first();
             if ($saldoKas) {
-                // dd('Kas ada');
                 // Jika saldo kas ada, perbarui saldo_akhir
                 $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
             } else {
-                // dd('Kas Null');
                 $data = [
                     'saldo_akhir' => $saldoAkhir,
                     'created_by' => Auth()->user()->id
                 ];
                 saldoAkhirKasQurban::create($data);
             }
-
+            
             $data = [
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
                 'kategori' => $request->kategori,
@@ -112,7 +111,7 @@ class kasQurbanController extends Controller
                 'created_by' => Auth()->user()->id
             ];
             kas::create($data);
-
+            event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
             return response()->json();
         }
     }
@@ -140,24 +139,36 @@ class kasQurbanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = kas::find($id);
-        // Periksa apakah data ditemukan
-
+        
         $tglTrans = Carbon::createFromFormat('d-m-Y', $request->tanggal);
         $thnBulanTrans = $tglTrans->format('Ym');
         $thnBulanSekarang = Carbon::now()->format('Ym');
         if ($thnBulanTrans != $thnBulanSekarang) {
             return response()->json(['msg' => 'tglOffSide']);
         } else {
+            // Periksa apakah data ditemukan
+            $data = kas::find($id);
+            $saldoAkhir = kas::SaldoAkhir();
             if ($data) {
+                if ($data->jenis == 'masuk') {
+                    $saldoAkhir -= $data->jumlah;
+                    $saldoAkhir += $request->jumlah; 
+                } 
+                if ($data->jenis == 'keluar') {
+                    $saldoAkhir += $data->jumlah;
+                    $saldoAkhir -= $request->jumlah; 
+                }
                 // Update data
+                $saldoKas = saldoAkhirKasQurban::first();
+                $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
                 $data->update([
                     'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
-                    'kategori' => $request->kategori,
+                    // 'kategori' => $request->kategori,
                     'keterangan' => $request->keterangan,
                     'jumlah' => $request->jumlah,
-                    'jenis' => $request->jenis,
+                    // 'jenis' => $request->jenis,
                 ]);
+                event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
     
                 // Kembalikan response JSON dengan status berhasil
                 return response()->json($data, 200);

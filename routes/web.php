@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Backend\DashboardController as BackendDashboardController;
 use App\Http\Controllers\Backend\KelompokController;
 use App\Http\Controllers\Backend\ProfileController as BackendProfileController;
 use App\Http\Controllers\Backend\UPQ\HewanController;
 use App\Http\Controllers\Backend\UPQ\kasQurbanController;
 use App\Http\Controllers\Backend\UPQ\PenerimaController;
 use App\Http\Controllers\Backend\UPQ\ShohibulController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +21,7 @@ Route::get('/groupKambing', [DashboardController::class, 'groupKambing']);
 Route::get('/kel', [DashboardController::class, 'kelompok']);
 Route::get('/warga', [DashboardController::class, 'warga'])->name('dashboard.warga');
 
-Route::get('/dashboard', function () {
-    return view('backend.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [BackendDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::get('/penerima/exportExcel', [PenerimaController::class, 'export_excel'])->name('exportExcel');
@@ -33,6 +33,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
     Route::resource('kasQurban', kasQurbanController::class);
 
     Route::get('saldoKas', [kasQurbanController::class, 'getSaldoAkhir']);
+    Route::get('dashboard/getSaldoKasQurban', [BackendDashboardController::class, 'getSaldoKasQurban']);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){
