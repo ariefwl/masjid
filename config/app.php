@@ -12,6 +12,7 @@ return [
     | other UI elements where an application name needs to be displayed.
     |
     */
+    'table_style' => 'table table-striped table-bordered dt-responsive nowrap',
 
     'name' => env('APP_NAME', 'Laravel'),
 

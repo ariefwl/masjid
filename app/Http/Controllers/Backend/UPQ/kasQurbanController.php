@@ -16,10 +16,20 @@ class kasQurbanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (request()->ajax()) {
-            $data = kas::orderBy('created_at', 'desc')->get();
+            // Konversi tanggal ke format 'Y-m-d'
+            $awal = date('Y-m-d', strtotime($request->tgl_awal));
+            $akhir = date('Y-m-d', strtotime($request->tgl_akhir));
+
+            if (!empty($request->tgl_awal)) {
+                $data = kas::whereBetween('tanggal', [$awal, $akhir])
+                ->orderBy('created_at', 'desc')
+                ->get();
+            } else {
+                $data = kas::orderBy('created_at', 'desc')->get();
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jumlah', function ($data) {
@@ -78,30 +88,6 @@ class kasQurbanController extends Controller
         if ($thnBulanTrans != $thnBulanSekarang) {
             return response()->json(['msg' => 'tglOffSide']);
         } else {
-            $saldoAkhir = kas::SaldoAkhir();
-            
-            // saldo akhir ditambah transaksi masuk/keluar
-            if ($data['jenis'] == 'masuk') {
-                $saldoAkhir += $data['jumlah'];
-            } else {
-                $saldoAkhir -= $data['jumlah'];
-            }
-
-            if ($saldoAkhir <= -1) {
-                return response()->json(['msg' => 'gagal']);
-            }
-            $saldoKas = saldoAkhirKasQurban::first();
-            if ($saldoKas) {
-                // Jika saldo kas ada, perbarui saldo_akhir
-                $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
-            } else {
-                $data = [
-                    'saldo_akhir' => $saldoAkhir,
-                    'created_by' => Auth()->user()->id
-                ];
-                saldoAkhirKasQurban::create($data);
-            }
-            
             $data = [
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
                 'kategori' => $request->kategori,
@@ -111,7 +97,6 @@ class kasQurbanController extends Controller
                 'created_by' => Auth()->user()->id
             ];
             kas::create($data);
-            event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
             return response()->json();
         }
     }
@@ -146,36 +131,20 @@ class kasQurbanController extends Controller
         if ($thnBulanTrans != $thnBulanSekarang) {
             return response()->json(['msg' => 'tglOffSide']);
         } else {
-            // Periksa apakah data ditemukan
+            // // Periksa apakah data ditemukan
             $data = kas::find($id);
-            $saldoAkhir = kas::SaldoAkhir();
-            if ($data) {
-                if ($data->jenis == 'masuk') {
-                    $saldoAkhir -= $data->jumlah;
-                    $saldoAkhir += $request->jumlah; 
-                } 
-                if ($data->jenis == 'keluar') {
-                    $saldoAkhir += $data->jumlah;
-                    $saldoAkhir -= $request->jumlah; 
-                }
-                // Update data
-                $saldoKas = saldoAkhirKasQurban::first();
-                $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
-                $data->update([
-                    'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
-                    // 'kategori' => $request->kategori,
-                    'keterangan' => $request->keterangan,
-                    'jumlah' => $request->jumlah,
-                    // 'jenis' => $request->jenis,
-                ]);
-                event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
-    
-                // Kembalikan response JSON dengan status berhasil
-                return response()->json($data, 200);
-            } else {
-                // Jika data tidak ditemukan, kembalikan response JSON dengan status tidak ditemukan
-                return response()->json(['message' => 'Data tidak ditemukan'], 404);
-            }
+            $data->controllerId = $id;
+            $data->nilaiawal = $data->jumlah;
+            $data->update([
+                'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
+                'kategori' => $request->kategori,
+                'keterangan' => $request->keterangan,
+                'jumlah' => $request->jumlah,
+                // 'jenis' => $request->jenis,
+            ]);
+
+            // Kembalikan response JSON dengan status berhasil
+            return response()->json($data, 200);
         }
     }
 
@@ -192,5 +161,37 @@ class kasQurbanController extends Controller
         $data = saldoAkhirKasQurban::latest()->value('saldo_akhir');
         // dd($data);
         return response()->json(['saldo_akhir'=>$data]);
+    }
+
+    public function cetakLap($tgl_awal, $tgl_akhir)
+    {
+        // Konversi tanggal ke format 'Y-m-d'
+        $awal = date('Y-m-d', strtotime($tgl_awal));
+        $akhir = date('Y-m-d', strtotime($tgl_akhir));
+
+        $kasRecords = kas::whereBetween('tanggal', [$awal, $akhir])->orderBy('tanggal', 'asc')->get();
+        // Calculate saldo awal (initial balance)
+        $saldoAwal = 1000000; // Example initial balance, adjust as needed
+
+        // Initialize arrays for masuk and keluar
+        $masuk = [];
+        $keluar = [];
+        $totalMasuk = 0;
+        $totalKeluar = 0;
+
+        // Process records
+        foreach ($kasRecords as $index => $record) {
+            if ($record->jenis == 'masuk') {
+                $masuk[] = $record;
+                $totalMasuk += $record->jumlah;
+            } else {
+                $keluar[] = $record;
+                $totalKeluar += $record->jumlah;
+            }
+        }
+
+        // Calculate saldo akhir (ending balance)
+        $saldoAkhir = $saldoAwal + $totalMasuk - $totalKeluar;
+        return view('backend/takmir/upq/kas/laporan', compact('tgl_awal','tgl_akhir','masuk','keluar','totalMasuk','totalKeluar','saldoAwal','saldoAkhir'));
     }
 }

@@ -76,7 +76,7 @@
                                 </div>
                             </div>
 
-                            <table id="tbl_shohibul" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <table id="tbl_shohibul" class="{{ config('app.table_style') }}" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th>No.</th>

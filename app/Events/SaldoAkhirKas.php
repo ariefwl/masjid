@@ -15,13 +15,13 @@ class SaldoAkhirKas implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    // public $saldoAkhir;
+    public $saldoAkhir;
     /**
      * Create a new event instance.
      */
-    public function __construct(public string $saldoAkhir)
+    public function __construct($saldoAkhir)
     {
-        // $this->saldoAkhir = $saldoAkhir;
+        $this->saldoAkhir = $saldoAkhir;
     }
     
     public function broadcastOn(): array

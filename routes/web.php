@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Reverb\Servers\Reverb\Http\Route as HttpRoute;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
@@ -34,6 +35,7 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
 
     Route::get('saldoKas', [kasQurbanController::class, 'getSaldoAkhir']);
     Route::get('dashboard/getSaldoKasQurban', [BackendDashboardController::class, 'getSaldoKasQurban']);
+    Route::get('CetakLaporan/{tgl_awal}/{tgl_akhir}', [kasQurbanController::class, 'cetakLap']);
 });
 
 Route::middleware('auth', 'AdminUPZ')->group(function(){

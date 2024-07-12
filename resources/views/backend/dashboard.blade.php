@@ -89,7 +89,7 @@
     window.onload = function() {
         var channel = Echo.channel('channel-sakhir');
         channel.listen("SaldoAkhirKas", function(response) {
-            // console.log(response.saldoAkhir);
+            console.log(response.saldoAkhir);
             document.getElementById("saldoakhir").innerText = 'Rp. ' + formatPrice(response.saldoAkhir);
         })
     }

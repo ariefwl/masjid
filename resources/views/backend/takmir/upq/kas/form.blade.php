@@ -15,7 +15,7 @@
                   <label for="tgl" class="col-sm-4 col-form-label">Tanggal</label>
                   <div class="col-sm-8">
                     {{-- <input type="date" id="tanggal" name="tanggal" class="form-control">                             --}}
-                    <input type="text" id="tanggal" name="tanggal" class="form-control">
+                    <input type="text" id="tanggal" name="tanggal" class="form-control datepicker">
                   </div>
                 </div>
                 <div class="row mb-3">

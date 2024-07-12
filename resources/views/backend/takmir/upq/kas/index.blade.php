@@ -34,10 +34,28 @@
                         <button onclick="add()" class="btn btn-circle btn-sm btn-primary mt-0">
                             <b><i class="ri-add-fill"></i> Tambah Data</b>
                         </button>
-                        <h3 class="card-title" id="saldoakhir" name="saldoakhir"></h3>
+                        {{-- <h3 class="card-title" id="saldoakhir" name="saldoakhir"></h3> --}}
                     </div>
                     <div class="card-body">
-                        <table id="tblKas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"><b>Periode :</b></span>
+                                    <input type="text" id="tgl_awal" name="tgl_awal" class="form-control datepicker">
+                                    <span class="input-group-text" id="basic-addon1"><b>s/d</b></span>
+                                    <input type="text" id="tgl_akhir" name="tgl_akhir" class="form-control datepicker">
+                                    <button type="button" class="btn btn-primary btn-bitbucket" id="filter"><b><i class="ri-filter-2-line"></i> Filter</b></button>
+                                    <a href="#" target="_blank" type="button" class="btn btn-success btn-bitbucket" id="ctkLap"><b><i class="ri-printer-line"></i> Cetak</b></a>
+                                </div>
+                            </div>
+                            {{-- <div class="col-lg-5">
+                                <div class="input-group">
+                                    <span class="input-group-text"><b>Kategori</b></span>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div> --}}
+                        </div>
+                        <table id="tblKas" class="{{ config('app.table_style') }}" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -84,9 +102,15 @@
             }
         });
 
-        // setInterval(() => {
-        //     tampilkanSaldo();
-        // }, 5000);
+        // tampilkanSaldo();
+        loadKas();
+
+        $('#filter').on('click', function(){
+            let awal = $('#tgl_awal').val()
+            let akhir = $('#tgl_akhir').val()
+            $('#tblKas').DataTable().destroy()
+            loadKas(awal, akhir)
+        })
 
         $('.currency').inputmask({
             'alias': 'numeric',
@@ -99,38 +123,14 @@
             'autoUnmask': true
         });
 
-        let tabel = $('#tblKas').DataTable({
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            language: {
-                lengthMenu: 'Display _MENU_ records per page',
-                zeroRecords: 'Nothing found - sorry',
-                info: 'Showing page _PAGE_ of _PAGES_',
-                infoEmpty: 'No records available',
-                infoFiltered: '(filtered from _MAX_ total records)'
-            },
-            ajax: {
-                url : '{{ url()->current() }}'
-            },
-            columnDefs: [
-                { className: 'dt-right', targets: [4,5] }
-            ],
-            columns: [
-                { data : 'DT_RowIndex'},
-                { data : 'tanggal'},
-                { data : 'kategori'},
-                { data : 'keterangan'},
-                { data : 'pemasukan'},
-                { data : 'pengeluaran'},
-                { data : 'nama'},
-                { data : 'button'},
-            ],
-            lengthChange: false,
+        $('#ctkLap').on('click', function(){
+            let tgl1 = $('#tgl_awal').val();
+            let tgl2 = $('#tgl_akhir').val();
+            let url = '{{ url("CetakLaporan") }}/' +tgl1+ '/' + tgl2;
+            $(this).attr('href', url);
         })
 
         $('#formKas').on('submit', function(e){
-
             let url = $(this).attr('action');
             let method = $(this).find('[name=_method]').val();
             // let $type = $('#status').val() === 'edit' ? 'put' : 'post';
@@ -153,45 +153,84 @@
                         if (data.msg == 'tglOffSide') {
                             showAlert('danger', 'Tanggal transaksi Off Side !');
                             $('#modalKas').modal('hide');
-                            tabel.ajax.reload();
+                            $('#tblKas').DataTable().ajax.reload();
                         } else {
                             if (data.msg == 'gagal') {
                                 showAlert('danger', 'Saldo kas tidak cukup !');
                                 $('#modalKas').modal('hide');
-                                tabel.ajax.reload();
+                                $('#tblKas').DataTable().ajax.reload();
                             } else {
                                 showAlert('success', $msg);
                                 $('#modalKas').modal('hide');
                                 // tampilkanSaldo();
-                                tabel.ajax.reload();
+                                $('#tblKas').DataTable().ajax.reload();
                             }
                         }
                     },
                     error: function(data){
                         showAlert('danger', 'Data gagal di simpan !');
                         $('#modalKas').modal('hide');
-                        tabel.ajax.reload();
+                        $('#tblKas').DataTable().ajax.reload();
                     }
                 })
             }
         })
 
-        $("#tanggal").flatpickr({
+        $(".datepicker").flatpickr({
             dateFormat: "d-m-Y",
+            placeholder: "dd/mm/yyyy"
         });
     }); 
 
-    function tampilkanSaldo()
+    function loadKas(awal, akhir)
     {
-        $.ajax({
-          url : "saldoKas",
-          type : "GET",
-          dataType : "JSON",          
-          success : function(response){
-            document.getElementById("saldoakhir").innerText = response.saldo_akhir;
-          }
+        let tabel = $('#tblKas').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            language: {
+                lengthMenu: 'Display _MENU_ records per page',
+                zeroRecords: 'Nothing found - sorry',
+                info: 'Showing page _PAGE_ of _PAGES_',
+                infoEmpty: 'No records available',
+                infoFiltered: '(filtered from _MAX_ total records)'
+            },
+            ajax: {
+                url : '{{ url()->current() }}',
+                data : {
+                    tgl_awal : awal,
+                    tgl_akhir : akhir
+                }
+            },
+            columnDefs: [
+                { className: 'dt-right', targets: [4,5] }
+            ],
+            columns: [
+                { data : 'DT_RowIndex'},
+                { data : 'tanggal'},
+                { data : 'kategori'},
+                { data : 'keterangan'},
+                { data : 'pemasukan'},
+                { data : 'pengeluaran'},
+                { data : 'nama'},
+                { data : 'button'},
+            ],
+            lengthChange: false,
+            bFilter: false,
         })
     }
+
+    // function tampilkanSaldo()
+    // {
+    //     $.ajax({
+    //       url : "saldoKas",
+    //       type : "GET",
+    //       dataType : "JSON",          
+    //       success : function(response){
+    //         document.getElementById("saldoakhir").innerText = response.saldo_akhir;
+    //       }
+    //     })
+    // }
 
     function add(url)
     {
@@ -248,8 +287,9 @@
     window.onload = function() {
         var channel = Echo.channel('channel-sakhir');
         channel.listen("SaldoAkhirKas", function(data) {
-            document.getElementById("saldoakhir").innerText = data.saldoAkhir;
-        })
+            console.log(data.saldoAkhir);
+            // document.getElementById("saldoakhir").innerText = data.saldoAkhir;
+        });
     }
 </script>
 @endpush
