@@ -10,6 +10,7 @@ use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Events\SaldoAkhirKas;
+use Illuminate\Support\Facades\DB;
 
 class kasQurbanController extends Controller
 {
@@ -159,19 +160,64 @@ class kasQurbanController extends Controller
     public function getSaldoAkhir()
     {
         $data = saldoAkhirKasQurban::latest()->value('saldo_akhir');
-        // dd($data);
         return response()->json(['saldo_akhir'=>$data]);
+    }
+
+    function hitungSaldoAwal($awal)
+    {
+        // dd($tgl_awal, $tgl_akhir);
+        // $sawal = 0;
+
+        // // Hitung total pemasukan dan pengeluaran sebelum periode
+        // $totalMasukSebelum = kas::where('jenis', 'masuk')
+        //     ->where('tanggal', '<', $awal)
+        //     ->sum('jumlah');
+
+        // $totalKeluarSebelum = kas::where('jenis', 'keluar')
+        //     ->where('tanggal', '<', $awal)
+        //     ->sum('jumlah');
+
+        // // Hitung saldo awal
+        // $sawal += $totalMasukSebelum - $totalKeluarSebelum;
+        // dd($sawal);
     }
 
     public function cetakLap($tgl_awal, $tgl_akhir)
     {
+        // $saldo_awal = DB::table('kas_qurban')
+        //             ->whereDate('tanggal', '<', $tgl_awal) // Ganti dengan tanggal awal bulan yang diinginkan
+        //             ->sum(DB::raw("CASE WHEN jenis = 'masuk' THEN jumlah ELSE - jumlah END"));
+        // dd($saldo_awal);
+        
+        // $saldo_akhir = DB::table('kas_qurban')
+        //             ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+        //             ->orderBy('tanggal', 'desc')
+        //             ->value('saldo_akhir') ?? $saldo_awal;
+        // dd($saldo_akhir);
+        
+        
         // Konversi tanggal ke format 'Y-m-d'
         $awal = date('Y-m-d', strtotime($tgl_awal));
         $akhir = date('Y-m-d', strtotime($tgl_akhir));
 
+        // $sawal = $this->hitungSaldoAwal($awal);
+        $sawal = 0;
+
+        // Hitung total pemasukan dan pengeluaran sebelum periode
+        $totalMasukSebelum = kas::where('jenis', 'masuk')
+            ->where('tanggal', '<', $awal)
+            ->sum('jumlah');
+
+        $totalKeluarSebelum = kas::where('jenis', 'keluar')
+            ->where('tanggal', '<', $awal)
+            ->sum('jumlah');
+
+        // Hitung saldo awal
+        $sawal += $totalMasukSebelum - $totalKeluarSebelum;
+        
         $kasRecords = kas::whereBetween('tanggal', [$awal, $akhir])->orderBy('tanggal', 'asc')->get();
         // Calculate saldo awal (initial balance)
-        $saldoAwal = 1000000; // Example initial balance, adjust as needed
+        // $saldoAwal = 1000000; // Example initial balance, adjust as needed
 
         // Initialize arrays for masuk and keluar
         $masuk = [];
@@ -191,7 +237,8 @@ class kasQurbanController extends Controller
         }
 
         // Calculate saldo akhir (ending balance)
-        $saldoAkhir = $saldoAwal + $totalMasuk - $totalKeluar;
-        return view('backend/takmir/upq/kas/laporan', compact('tgl_awal','tgl_akhir','masuk','keluar','totalMasuk','totalKeluar','saldoAwal','saldoAkhir'));
+        $saldoAkhir = $sawal + $totalMasuk - $totalKeluar;
+        // dd($saldoAkhir);
+        return view('backend/takmir/upq/kas/laporan', compact('tgl_awal','tgl_akhir','masuk','keluar','totalMasuk','totalKeluar','sawal','saldoAkhir'));
     }
 }

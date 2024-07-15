@@ -43,21 +43,22 @@
 <body>
     <div class="report-container">
         <h3>Laporan Kas</h3>
+        <h3>Idul Adha 1.444 H.</h3>
         <h3>Periode : {{ $tgl_awal }} s/d {{ $tgl_akhir }}</h3>
         <table>
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Tanggal</th>
-                    <th>Keterangan</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
+                    <th style="width: 5%;">No.</th>
+                    <th style="width: 10%;">Tanggal</th>
+                    <th style="width: 50%;">Keterangan</th>
+                    <th style="width: 10%;">Masuk</th>
+                    <th style="width: 10%;">Keluar</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td colspan="3" class="text-right"><strong>Saldo Awal :</strong></td>
-                    <td class="text-right">{{ number_format($saldoAwal, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ number_format($sawal, 0, ',', '.') }}</td>
                     <td></td>
                 </tr>
                 <tr>
