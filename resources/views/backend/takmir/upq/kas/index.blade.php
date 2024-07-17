@@ -284,12 +284,12 @@
         return true;
     }
 
-    window.onload = function() {
-        var channel = Echo.channel('channel-sakhir');
-        channel.listen("SaldoAkhirKas", function(data) {
-            console.log(data.saldoAkhir);
-            // document.getElementById("saldoakhir").innerText = data.saldoAkhir;
-        });
-    }
+    // window.onload = function() {
+    //     var channel = Echo.channel('channel-sakhir');
+    //     channel.listen("SaldoAkhirKas", function(data) {
+    //         console.log(data.saldoAkhir);
+    //         // document.getElementById("saldoakhir").innerText = data.saldoAkhir;
+    //     });
+    // }
 </script>
 @endpush

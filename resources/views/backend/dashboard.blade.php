@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <!-- Saldo Kas Card -->
-                    <div class="col-xxl-4 col-md-6">
+                    <div class="col-xxl-4 col-md-4">
                         <div class="card info-card sales-card">
         
                         {{-- <div class="filter">
@@ -50,7 +50,7 @@
                                 <i class="bi bi-currency-dollar"></i>
                             </div>
                             <div class="ps-3">
-                                <h6 id="saldoakhir"></h6>
+                                <h5 id="saldoakhir"></h5>
                                 <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
         
                             </div>
@@ -59,6 +59,76 @@
         
                         </div>
                     </div><!-- End Saldo Kas Card -->
+
+                     <!-- Revenue Card -->
+                     <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+        
+                        {{-- <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+        
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                        </div> --}}
+        
+                        <div class="card-body">
+                            <h5 class="card-title">Pemasukan <span>| Per tgl : {{ date('d-M-Y') }}</span></h5>
+        
+                            <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h5 id="revenue"></h5>
+                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+        
+                            </div>
+                            </div>
+                        </div>
+        
+                        </div>
+                    </div><!-- End Revenue Card -->
+
+                     <!-- Expense Card -->
+                     <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+        
+                        {{-- <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+        
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                        </div> --}}
+        
+                        <div class="card-body">
+                            <h5 class="card-title">Pengeluaran <span>| Per tgl : {{ date('d-M-Y') }}</span></h5>
+        
+                            <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h5 id="expense"></h5>
+                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+        
+                            </div>
+                            </div>
+                        </div>
+        
+                        </div>
+                    </div><!-- End Expense Card -->
                 </div>
             </div>
         </div>
@@ -71,6 +141,8 @@
 <script>
     $(document).ready(function(){
         getSaldoKasQurban();
+        getRevenue();
+        getExpense();
     })
 
     function getSaldoKasQurban()
@@ -86,11 +158,38 @@
         })
     }
 
+    function getRevenue()
+    {
+        $.ajax({
+            url: 'dashboard/getRevenue',
+            type : 'GET',
+            dataType : 'JSON',
+            success : function(response){
+                // console.log(response.data);
+                document.getElementById("revenue").innerText = 'Rp. ' + formatPrice(response.data);
+            }
+        })
+    }
+
+    function getExpense()
+    {
+        $.ajax({
+            url: 'dashboard/getExpense',
+            type : 'GET',
+            dataType : 'JSON',
+            success : function(response){
+                // console.log(response.data);
+                document.getElementById("expense").innerText = 'Rp. ' + formatPrice(response.data);
+            }
+        })
+    }
+
     window.onload = function() {
         var channel = Echo.channel('channel-sakhir');
         channel.listen("SaldoAkhirKas", function(response) {
-            console.log(response.saldoAkhir);
             document.getElementById("saldoakhir").innerText = 'Rp. ' + formatPrice(response.saldoAkhir);
+            document.getElementById("revenue").innerText = 'Rp. ' + formatPrice(response.revenue);
+            document.getElementById("expense").innerText = 'Rp. ' + formatPrice(response.expense);
         })
     }
 

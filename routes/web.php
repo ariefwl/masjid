@@ -35,6 +35,8 @@ Route::middleware('auth', 'AdminUPQ')->group(function(){
 
     Route::get('saldoKas', [kasQurbanController::class, 'getSaldoAkhir']);
     Route::get('dashboard/getSaldoKasQurban', [BackendDashboardController::class, 'getSaldoKasQurban']);
+    Route::get('dashboard/getRevenue', [BackendDashboardController::class, 'getRevenue']);
+    Route::get('dashboard/getExpense', [BackendDashboardController::class, 'getExpense']);
     Route::get('CetakLaporan/{tgl_awal}/{tgl_akhir}', [kasQurbanController::class, 'cetakLap']);
 });
 

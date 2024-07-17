@@ -129,13 +129,14 @@ class kasQurbanController extends Controller
         $tglTrans = Carbon::createFromFormat('d-m-Y', $request->tanggal);
         $thnBulanTrans = $tglTrans->format('Ym');
         $thnBulanSekarang = Carbon::now()->format('Ym');
+
         if ($thnBulanTrans != $thnBulanSekarang) {
             return response()->json(['msg' => 'tglOffSide']);
         } else {
             // // Periksa apakah data ditemukan
             $data = kas::find($id);
-            $data->controllerId = $id;
-            $data->nilaiawal = $data->jumlah;
+            // $data->controllerId = $id;
+            $nilaiawal = $data->jumlah;
             $data->update([
                 'tanggal' => Carbon::createFromFormat('d-m-Y', $request->tanggal)->format('Y-m-d'),
                 'kategori' => $request->kategori,

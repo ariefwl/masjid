@@ -8,6 +8,7 @@ use App\Models\kas;
 use App\Models\saldoAkhirKasQurban;
 use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -32,5 +33,23 @@ class DashboardController extends Controller
         // dd($data[0]['saldo_akhir']);
         // $data = SaldoAkhirKas();
         return response()->json(['data'=>$data]);
+    }
+
+    public function getRevenue()
+    {
+        $data = DB::table('kas_qurban')
+                ->where('jenis', 'masuk')
+                ->where('created_at', 'like', '2024%')
+                ->sum('jumlah');
+        return response()->json(['data' => $data]);
+    }
+
+    public function getExpense()
+    {
+        $data = DB::table('kas_qurban')
+                ->where('jenis', 'keluar')
+                ->where('created_at', 'like', '2024%')
+                ->sum('jumlah');
+        return response()->json(['data' => $data]);
     }
 }

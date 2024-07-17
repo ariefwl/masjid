@@ -16,18 +16,22 @@ class SaldoAkhirKas implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $saldoAkhir;
+    public $revenue;
+    public $expense;
     /**
      * Create a new event instance.
      */
-    public function __construct($saldoAkhir)
+    public function __construct($saldoAkhir, $revenue, $expense)
     {
         $this->saldoAkhir = $saldoAkhir;
+        $this->revenue = $revenue;
+        $this->expense = $expense;
     }
     
     public function broadcastOn(): array
     {
         return [
-            new Channel('channel-sakhir'),
+            new Channel('channel-sakhir')
         ];
     }
 }

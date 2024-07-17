@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
+use App\Events\GetRevenue;
 use App\Events\SaldoAkhirKas;
 use App\Models\kas;
 use App\Models\saldoAkhirKasQurban;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class KasObserver
@@ -39,7 +41,9 @@ class KasObserver
                 ];
                 saldoAkhirKasQurban::create($kas);
             }
-            event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
+            $revenue = kas::GetRevenue();
+            $expense = kas::GetExpense();
+            event(new SaldoAkhirKas($saldoAkhir, $revenue, $expense));
     }
 
     /**
@@ -48,23 +52,25 @@ class KasObserver
     public function updated(kas $kas): void
     {
         // Periksa apakah data ditemukan
-        $data = kas::find($kas->controllerId);
-        $awal = $kas->nilaiawal;
+        $data = kas::find($kas->id);
+        $nilaiawal = $kas->initialAmount;
         $saldoAkhir = kas::SaldoAkhir();
         if ($data) {
             if ($data->jenis == 'masuk') {
-                $saldoAkhir -= $awal;
+                $saldoAkhir -= $nilaiawal;
                 $saldoAkhir += $data->jumlah;
             } 
             if ($data->jenis == 'keluar') {
-                $saldoAkhir += $awal;
+                $saldoAkhir += $nilaiawal;
                 $saldoAkhir -= $kas->jumlah; 
             }
             // Update data
             $saldoKas = saldoAkhirKasQurban::first();
             $saldoKas->update(['saldo_akhir' => $saldoAkhir]);
         }
-        event(new SaldoAkhirKas(saldoAkhir: $saldoAkhir));
+        $revenue = kas::GetRevenue();
+        $expense = kas::GetExpense();
+        event(new SaldoAkhirKas($saldoAkhir, $revenue, $expense));
     }
 
     /**
