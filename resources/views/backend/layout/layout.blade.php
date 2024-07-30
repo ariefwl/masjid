@@ -40,9 +40,11 @@
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
   </head>
-
-  {{-- <body class="toggle-sidebar"> --}}
-  <body>
+@if (Auth()->user()->unit == 3)
+<body>
+@else
+<body class="toggle-sidebar">
+@endif
 
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
