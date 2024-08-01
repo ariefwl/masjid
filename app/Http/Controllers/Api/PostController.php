@@ -40,7 +40,8 @@ class PostController extends Controller
 
         //create post
         $post = Post::create([
-            'image'     => $image->hashName(),
+            // 'image'     => $image->hashName(),
+            'image'     => $request->image,
             'title'     => $request->title,
             'content'   => $request->content,
         ]);
